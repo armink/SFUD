@@ -53,9 +53,13 @@ Reading the W25Q64 8388608 bytes data, waiting...
 Read benchmark success, total time: 16.129S.
 ```
 
-更多性能测试结果见：`/docs/zh/benchmark.txt`
+更多性能测试结果见： [`/docs/zh/benchmark.txt`](https://github.com/armink/SFUD/blob/master/sfud/docs/zh/benchmark.txt)
 
 #### 1.1.2 读取/修改 Flash 状态命令
+
+```
+flash_status <read|write> <device_index> [<1:volatile|0:non-volatile> <status>]
+```
 
 ## 2、文件（夹）说明
 
