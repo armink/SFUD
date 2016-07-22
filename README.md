@@ -8,9 +8,9 @@
 
 - 主要特点：面向对象（同时支持多个 Flash 对象）、可灵活裁剪、扩展性强、支持 4 字节地址
 - 资源占用
-  - 标准占用：RAM：0.2KB ROM：5.5KB
-  - 最小占用：RAM：0.1KB ROM：3.6KB
-- 设计思路：这里要首先跟大家介绍一个标准： **SFDP** ，它是 JEDEC （固态技术协会）制定的串行 Flash 功能的参数表标准，最新版 V1.6B （[点击这里查看](https://www.jedec.org/standards-documents/docs/jesd216b)）。该标准规定了，每个 Flash 中会存在一个参数表，该表中会存放 Flash 容量、写粗粒度、擦除命令、地址模式等 Flash 规格参数。目前，除了部分厂家不推荐长期使用的 Flash 会不支持该标准，其他绝大多数新出厂的 Flash 均已支持 SFDP 标准。所以该库在初始化时会优先读取 SFDP 表参数，如果该 Flash 不支持 SFDP，则查询配置文件 ( `/sfud/inc/sfud_flash_def.h` ) 中提供的 **Flash 参数信息表** 中是否支持该款 Flash。如果不支持，则可以在配置文件中添加该款 Flash 的参数信息（添加方法详细见 [2.5 添加库目前不支持的 Flash](#25-添加库目前不支持的-flash)）。获取到了 Flash 的规格参数后，就可以实现对 Flash 的全部操作。
+  - 标准占用：RAM:0.2KB ROM:5.5KB
+  - 最小占用：RAM:0.1KB ROM:3.6KB
+- 设计思路：这里要首先跟大家介绍一个标准： **SFDP** ，它是 JEDEC （固态技术协会）制定的串行 Flash 功能的参数表标准，最新版 V1.6B （[点击这里查看](https://www.jedec.org/standards-documents/docs/jesd216b)）。该标准规定了，每个 Flash 中会存在一个参数表，该表中会存放 Flash 容量、写粗粒度、擦除命令、地址模式等 Flash 规格参数。目前，除了部分厂家旧款 Flash 型号会不支持该标准，其他绝大多数新出厂的 Flash 均已支持 SFDP 标准。所以该库在初始化时会优先读取 SFDP 表参数，如果该 Flash 不支持 SFDP，则查询配置文件 ( `/sfud/inc/sfud_flash_def.h` ) 中提供的 **Flash 参数信息表** 中是否支持该款 Flash。如果不支持，则可以在配置文件中添加该款 Flash 的参数信息（添加方法详细见 [2.5 添加库目前不支持的 Flash](#25-添加库目前不支持的-flash)）。获取到了 Flash 的规格参数后，就可以实现对 Flash 的全部操作。
 
 ## 1、为什么选择 SFUD
 
@@ -23,7 +23,7 @@
 
 ### 2.1 已支持 Flash 
 
-下表为所有在 Demo 平台上进行过真机测试的 Flash。目前 SFUD 提供的 **Flash 参数信息表** 只包括下表中 **不支持** SFDP 标准的 Flash，其他 **不支持** SFDP 标准的 Flash 需要大家以后 **共同来完善和维护**  **([Github](https://github.com/armink/SFUD)|[OSChina](http://git.oschina.net/armink/SFUD)|[Coding](https://coding.net/u/armink/p/SFUD/git))** 。如果觉得这个开源项目很赞，可以点击[项目主页](https://github.com/armink/SFUD) 右上角的 **Star** ，同时把它推荐给更多有需要的朋友。
+下表为所有在 Demo 平台上进行过真机测试的 Flash。目前 SFUD 提供的 **Flash 参数信息表** 只包括下表中 **不支持** SFDP 标准的 Flash，其他不支持 SFDP 标准的 Flash 需要大家以后 **共同来完善和维护**  **([Github](https://github.com/armink/SFUD)|[OSChina](http://git.oschina.net/armink/SFUD)|[Coding](https://coding.net/u/armink/p/SFUD/git))** 。如果觉得这个开源项目很赞，可以点击[项目主页](https://github.com/armink/SFUD) 右上角的 **Star** ，同时把它推荐给更多有需要的朋友。
 
 |型号|制造商|容量|最高速度|SFDP|备注|
 |:--:|:----:|:--:|:--:|:--:|:--:|
