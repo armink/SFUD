@@ -60,7 +60,8 @@ void thread_entry_sys_monitor(void* parameter)
 
 
 /**
- * 系统初始化线程
+ * System initialization thread.
+ *
  * @param parameter parameter
  */
 void sys_init_thread(void* parameter){
@@ -77,13 +78,15 @@ void sys_init_thread(void* parameter){
     /* Add CPU usage to system */
     cpu_usage_init();
 
-    /* SFUD 初始化 */
-    sfud_init();
+    /* SFUD initialize */
+    if (sfud_init() == SFUD_SUCCESS) {
+        /* initialize OK and switch to running status */
+        set_system_status(SYSTEM_STATUS_RUN);
+    } else {
+        /* initialize fail and switch to fault status */
+        set_system_status(SYSTEM_STATUS_FAULT);
+    }
 
-    /* 初始化完成，系统状态才会变为正常运行状态 */
-    set_system_status(SYSTEM_STATUS_RUN);
-
-    /* 初始化完成，系统状态才会变为正常运行状态 */
     rt_thread_delete(rt_thread_self());
 }
 
