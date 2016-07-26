@@ -9,8 +9,7 @@
 ### 1.1、使用方法
 
 - 1、打开电脑的终端与Demo的串口1进行连接，串口配置 115200 8 1 N，此时可以在终端上看到Demo的打印日志
-- 2、断电重启Demo
-- 3、等待重启完成后，即可查看到类似如下的打印日志信息
+- 2、下载并运行 Demo ，此时可查看到类似如下的打印日志信息
 
 ```
 [SFUD](..\..\..\sfud\src\sfud.c:79) Start initialize Serial Flash Universal Driver(SFUD) V0.07.13.
