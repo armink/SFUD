@@ -1,4 +1,4 @@
-# SFUD(Serial Flash Universal Driver) 串行 Flash 通用驱动库
+# SFUD (Serial Flash Universal Driver) 串行 Flash 通用驱动库
 
 ---
 
@@ -23,7 +23,7 @@
 
 ### 2.1 已支持 Flash 
 
-下表为所有在 Demo 平台上进行过真机测试的 Flash。目前 SFUD 提供的 **Flash 参数信息表** 只包括下表中 **不支持** SFDP 标准的 Flash，其他不支持 SFDP 标准的 Flash 需要大家以后 **共同来完善和维护**  **([Github](https://github.com/armink/SFUD)|[OSChina](http://git.oschina.net/armink/SFUD)|[Coding](https://coding.net/u/armink/p/SFUD/git))** 。如果觉得这个开源项目很赞，可以点击[项目主页](https://github.com/armink/SFUD) 右上角的 **Star** ，同时把它推荐给更多有需要的朋友。
+下表为所有在 Demo 平台上进行过真机测试的 Flash。目前 SFUD 提供的 **Flash 参数信息表** 只包括下表中 **不支持** SFDP 标准的 Flash，其他不支持 SFDP 标准的 Flash 需要大家以后 **共同来完善和维护**  **([Github](https://github.com/armink/SFUD)|[OSChina](http://git.oschina.net/armink/SFUD)|[Coding](https://coding.net/u/armink/p/SFUD/git))** 。如果觉得这个开源项目很赞，可以点击 [项目主页](https://github.com/armink/SFUD) 右上角的 **Star** ，同时把它推荐给更多有需要的朋友。
 
 |型号|制造商|容量|最高速度|SFDP|备注|
 |:--:|:----:|:--:|:--:|:--:|:--:|
@@ -44,7 +44,7 @@
 |[A25L080](http://www.amictechnology.com/datasheets/A25L080.pdf)|AMIC|8Mb|100Mhz|不支持||
 |[F25L004](http://www.esmt.com.tw/db/manager/upload/f25l004.pdf)|ESMT|4Mb|100Mhz|不支持||
 |[PCT25VF016B](http://pctgroup.com.tw/attachments/files/files/248_25VF016B-P.pdf)|PCT|16Mb|80Mhz|不支持|SST 授权许可，会被识别为 SST25VF016B|
-|[AT45DB161E](http://www.adestotech.com/wp-content/uploads/doc8782.pdf)|ADESTO|16Mb|85MHz|不支持|ADESTO 收购 Atmel 串行闪存产品线 未测试|
+|[AT45DB161E](http://www.adestotech.com/wp-content/uploads/doc8782.pdf)|ADESTO|16Mb|85MHz|不支持|ADESTO 收购 Atmel 串行闪存产品线|
 
 ### 2.2 API 说明
 
