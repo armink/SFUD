@@ -197,6 +197,15 @@ enum {
 
 再将其增加到 `SFUD_FLASH_CHIP_TABLE` 宏定义末尾，即可完成该库对 `GD25Q64B` 的支持。
 
-### 2.6 许可
+### 2.6 Demo
+
+目前以支持如下平台下的 Demo
+
+|路径                             |平台描述|
+|:-----                           |:----|
+|[/demo/stm32f10x_non_os](https://github.com/armink/SFUD/tree/master/demo/stm32f10x_non_os) |STM32F10X 裸机平台|
+|[/demo/stm32f2xx_rtt](https://github.com/armink/SFUD/tree/master/demo/stm32f2xx_rtt)  |STM32F2XX + [RT-Thread](http://www.rt-thread.org/) 操作系统平台|
+
+### 2.7 许可
 
 采用 MIT 开源协议，细节请阅读项目中的 LICENSE 文件内容。
