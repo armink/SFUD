@@ -46,9 +46,10 @@
 
 /* support maximum SFDP major revision by driver */
 #define SUPPORT_MAX_SFDP_MAJOR_REV                  1
-/* The JEDEC basic flash parameter table length is 9 DWORDs (288-bit) on JESD216 (V1.0) initial release standard */
+/* the JEDEC basic flash parameter table length is 9 DWORDs (288-bit) on JESD216 (V1.0) initial release standard */
 #define BASIC_TABLE_LEN                             9
-
+/* the smallest eraser in SFDP eraser table */
+#define SMALLEST_ERASER_INDEX                       0
 /**
  *  SFDP parameter header structure
  */
@@ -314,6 +315,22 @@ static bool read_basic_table(sfud_flash *flash, sfdp_para_header *basic_header) 
             j++;
         }
     }
+    /* sort the eraser size from small to large */
+    for (uint8_t i = 0, j = 0; i < SFUD_SFDP_ERASE_TYPE_MAX_NUM; i++) {
+        if (sfdp->eraser[i].size) {
+            for (j = i + 1; j < SFUD_SFDP_ERASE_TYPE_MAX_NUM; j++) {
+                if (sfdp->eraser[j].size != 0 && sfdp->eraser[i].size > sfdp->eraser[j].size) {
+                    /* swap the small eraser */
+                    uint32_t temp_size = sfdp->eraser[i].size;
+                    uint8_t temp_cmd = sfdp->eraser[i].cmd;
+                    sfdp->eraser[i].size = sfdp->eraser[j].size;
+                    sfdp->eraser[i].cmd = sfdp->eraser[j].cmd;
+                    sfdp->eraser[j].size = temp_size;
+                    sfdp->eraser[j].cmd = temp_cmd;
+                }
+            }
+        }
+    }
 
     sfdp->available = true;
     return true;
@@ -337,32 +354,33 @@ static sfud_err read_sfdp_data(const sfud_flash *flash, uint32_t addr, uint8_t *
 }
 
 /**
- * get the suitable eraser for erase process from SFDP parameter
+ * get the most suitable eraser for erase process from SFDP parameter
  *
  * @param flash flash device
+ * @param addr start address
  * @param erase_size will be erased size
  *
  * @return the eraser index of SFDP eraser table  @see sfud_sfdp.eraser[]
  */
-size_t sfud_sfdp_get_suitable_eraser(const sfud_flash *flash, size_t erase_size) {
-    size_t i, index = 0;
-    bool find_ok = false;
-    /* find an suitable eraser which size is less than and closest to erase size */
-    for (i = 0; i < SFUD_SFDP_ERASE_TYPE_MAX_NUM; i++) {
-        if (flash->sfdp.eraser[i].size != 0 && erase_size >= flash->sfdp.eraser[i].size
-                && flash->sfdp.eraser[i].size >= flash->sfdp.eraser[index].size) {
-            index = i;
-            find_ok = true;
-        }
+size_t sfud_sfdp_get_suitable_eraser(const sfud_flash *flash, uint32_t addr, size_t erase_size) {
+    size_t index = SMALLEST_ERASER_INDEX;
+    /* only used when flash supported SFDP */
+    SFUD_ASSERT(flash->sfdp.available);
+    /* the address isn't align by smallest eraser's size, then use the smallest eraser */
+    if (addr % flash->sfdp.eraser[SMALLEST_ERASER_INDEX].size) {
+        return SMALLEST_ERASER_INDEX;
     }
-    /* erase size is lass than all eraser size then used smallest eraser */
-    if (!find_ok) {
-        index = 0;
-        /* find the smallest erase size for eraser */
-        for (i = 0; i < SFUD_SFDP_ERASE_TYPE_MAX_NUM; i++) {
-            if (flash->sfdp.eraser[i].size != 0 && flash->sfdp.eraser[index].size > flash->sfdp.eraser[i].size) {
-                index = i;
-            }
+    /* Find the suitable eraser.
+     * The largest size eraser is at the end of eraser table.
+     * In order to decrease erase command counts, so the find process is from the end of eraser table. */
+    for (size_t i = SFUD_SFDP_ERASE_TYPE_MAX_NUM - 1;; i--) {
+        if ((flash->sfdp.eraser[i].size != 0) && (erase_size >= flash->sfdp.eraser[i].size)
+                && (addr % flash->sfdp.eraser[i].size == 0)) {
+            index = i;
+            break;
+        }
+        if (i == SMALLEST_ERASER_INDEX) {
+            break;
         }
     }
     return index;

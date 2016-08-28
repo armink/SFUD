@@ -52,7 +52,6 @@ static const sfud_flash_chip flash_chip_table[] = SFUD_FLASH_CHIP_TABLE;
 
 static sfud_err software_init(const sfud_flash *flash);
 static sfud_err hardware_init(sfud_flash *flash);
-static sfud_err chip_erase(const sfud_flash *flash);
 static sfud_err page256_or_1_byte_write(const sfud_flash *flash, uint32_t addr, size_t size, uint16_t write_gran,
         const uint8_t *data);
 static sfud_err aai_write(const sfud_flash *flash, uint32_t addr, size_t size, const uint8_t *data);
@@ -306,7 +305,7 @@ sfud_err sfud_read(const sfud_flash *flash, uint32_t addr, size_t size, uint8_t 
  *
  * @return result
  */
-static sfud_err chip_erase(const sfud_flash *flash) {
+sfud_err sfud_chip_erase(const sfud_flash *flash) {
     sfud_err result = SFUD_SUCCESS;
     const sfud_spi *spi = &flash->spi;
     uint8_t cmd_data[4];
@@ -341,7 +340,7 @@ static sfud_err chip_erase(const sfud_flash *flash) {
     }
     result = wait_busy(flash);
 
-    exit:
+exit:
     /* unlock SPI */
     if (spi->unlock) {
         spi->unlock(spi);
@@ -362,7 +361,7 @@ static sfud_err chip_erase(const sfud_flash *flash) {
  * @return result
  */
 sfud_err sfud_erase(const sfud_flash *flash, uint32_t addr, size_t size) {
-    extern size_t sfud_sfdp_get_suitable_eraser(const sfud_flash *flash, size_t erase_size);
+    extern size_t sfud_sfdp_get_suitable_eraser(const sfud_flash *flash, uint32_t addr, size_t erase_size);
 
     sfud_err result = SFUD_SUCCESS;
     const sfud_spi *spi = &flash->spi;
@@ -379,7 +378,7 @@ sfud_err sfud_erase(const sfud_flash *flash, uint32_t addr, size_t size) {
     }
 
     if (addr == 0 && size == flash->chip.capacity) {
-        return chip_erase(flash);
+        return sfud_chip_erase(flash);
     }
 
     /* lock SPI */
@@ -393,7 +392,7 @@ sfud_err sfud_erase(const sfud_flash *flash, uint32_t addr, size_t size) {
 #ifdef SFUD_USING_SFDP
         if (flash->sfdp.available) {
             /* get the suitable eraser for erase process from SFDP parameter */
-            eraser_index = sfud_sfdp_get_suitable_eraser(flash, size);
+            eraser_index = sfud_sfdp_get_suitable_eraser(flash, addr, size);
             cur_erase_cmd = flash->sfdp.eraser[eraser_index].cmd;
             cur_erase_size = flash->sfdp.eraser[eraser_index].size;
         } else {
