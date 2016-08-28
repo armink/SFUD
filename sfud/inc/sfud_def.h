@@ -53,7 +53,7 @@ extern "C" {
 #define SFUD_ASSERT(EXPR)                                                      \
 if (!(EXPR))                                                                   \
 {                                                                              \
-    SFUD_DEBUG("(%s) has assert failed at %s.\n", #EXPR, __FUNCTION__);        \
+    SFUD_DEBUG("(%s) has assert failed at %s.", #EXPR, __FUNCTION__);          \
     while (1);                                                                 \
 }
 #else
