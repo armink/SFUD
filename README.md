@@ -33,6 +33,7 @@
 |[W25Q32BV](http://www.winbond.com/resource-files/w25q32bv_revi_100413_wo_automotive.pdf)|Winbond|32Mb|104Mhz|支持||
 |[W25Q64CV](http://www.winbond.com/resource-files/w25q64cv_revh_052214[2].pdf)|Winbond|64Mb|80Mhz|支持||
 |[W25Q128BV](http://www.winbond.com/resource-files/w25q128bv_revh_100313_wo_automotive.pdf)|Winbond|128Mb|104Mhz|支持||
+|[W25Q256FV](http://www.winbond.com/resource-files/w25q256fv%20revi%2002262016%20kms.pdf)|Winbond|256Mb|104Mhz|支持||
 |[MX25L3206E](http://www.macronix.com/Lists/DataSheet/Attachments/3199/MX25L3206E,%203V,%2032Mb,%20v1.5.pdf)|Macronix|32Mb|86MHz|支持||
 |[KH25L3206E](http://www.macronix.com.hk/Lists/Datasheet/Attachments/131/KH25L3206E.pdf)|Macronix|32Mb|86Mhz|支持||
 |[SST25VF016B](http://ww1.microchip.com/downloads/en/DeviceDoc/20005044C.pdf)|Microchip|16Mb|50MHz|不支持| SST 已被 Microchip 收购|
@@ -40,6 +41,7 @@
 |[EN25Q32B](http://www.kean.com.au/oshw/WR703N/teardown/EN25Q32B%2032Mbit%20SPI%20Flash.pdf)|EON|32Mb|104MHz|不支持||
 |[GD25Q64B](http://www.gigadevice.com/product/download/24.html)|GigaDevice|64Mb|120Mhz|不支持||
 |[S25FL216K](http://www.cypress.com/file/197346/download)|Cypress|16Mb|65Mhz|不支持||
+|[S25FL164K](http://www.cypress.com/file/196886/download)|Cypress|64Mb|108Mhz|支持||
 |[A25LQ64](http://www.amictechnology.com/datasheets/A25LQ64.pdf)|AMIC|64Mb|104Mhz|支持||
 |[A25L080](http://www.amictechnology.com/datasheets/A25L080.pdf)|AMIC|8Mb|100Mhz|不支持||
 |[F25L004](http://www.esmt.com.tw/db/manager/upload/f25l004.pdf)|ESMT|4Mb|100Mhz|不支持||
@@ -93,7 +95,17 @@ sfud_err sfud_erase(const sfud_flash *flash, uint32_t addr, size_t size)
 |addr                                    |起始地址|
 |size                                    |擦除数据的大小|
 
-#### 2.2.6 往 Flash 写数据
+#### 2.2.6 擦除 Flash 全部数据
+
+```C
+sfud_err sfud_chip_erase(const sfud_flash *flash)
+```
+
+|参数                                    |描述|
+|:-----                                  |:----|
+|flash                                   |Flash 设备对象|
+
+#### 2.2.7 往 Flash 写数据
 
 ```C
 sfud_err sfud_write(const sfud_flash *flash, uint32_t addr, size_t size, const uint8_t *data)
@@ -106,7 +118,7 @@ sfud_err sfud_write(const sfud_flash *flash, uint32_t addr, size_t size, const u
 |size                                    |写数据的大小|
 |data                                    |待写入的数据|
 
-#### 2.2.7 先擦除再往 Flash 写数据
+#### 2.2.8 先擦除再往 Flash 写数据
 
 ```C
 sfud_err sfud_erase_write(const sfud_flash *flash, uint32_t addr, size_t size, const uint8_t *data)
@@ -119,7 +131,7 @@ sfud_err sfud_erase_write(const sfud_flash *flash, uint32_t addr, size_t size, c
 |size                                    |写数据的大小|
 |data                                    |待写入的数据|
 
-#### 2.2.8 读取 Flash 状态
+#### 2.2.9 读取 Flash 状态
 
 ```C
 sfud_err sfud_read_status(const sfud_flash *flash, uint8_t *status)
@@ -130,7 +142,7 @@ sfud_err sfud_read_status(const sfud_flash *flash, uint8_t *status)
 |flash                                   |Flash 设备对象|
 |status                                  |当前状态寄存器值|
 
-#### 2.2.9 写（修改） Flash 状态
+#### 2.2.10 写（修改） Flash 状态
 
 ```C
 sfud_err sfud_write_status(const sfud_flash *flash, bool is_volatile, uint8_t status)
@@ -199,7 +211,7 @@ enum {
 
 ### 2.6 Demo
 
-目前以支持如下平台下的 Demo
+目前已支持如下平台下的 Demo
 
 |路径                             |平台描述|
 |:-----                           |:----|
