@@ -1209,9 +1209,6 @@
         <file>
           <name>$PROJ_DIR$\..\..\..\sfud\src\sfud_sfdp.c</name>
         </file>
-        <file>
-          <name>$PROJ_DIR$\..\..\..\sfud\src\sfud_soft_spi.c</name>
-        </file>
       </group>
     </group>
   </group>

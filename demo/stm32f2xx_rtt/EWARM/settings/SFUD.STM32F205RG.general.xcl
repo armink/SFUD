@@ -2,7 +2,7 @@
 
 "C:\Program Files\IAR Systems\Embedded Workbench 7.4\arm\bin\armjlink2.dll" 
 
-"E:\Program\STM32\SFUD\demo\stm32f2xx\EWARM\STM32F205RG\Exe\SFUD.out" 
+"E:\Program\STM32\SFUD\demo\stm32f2xx_rtt\EWARM\STM32F205RG\Exe\SFUD.out" 
 
 --plugin "C:\Program Files\IAR Systems\Embedded Workbench 7.4\arm\bin\armbat.dll" 
 

@@ -1170,7 +1170,7 @@
   <group>
     <name>components</name>
     <group>
-      <name>easyflash</name>
+      <name>sfud</name>
       <group>
         <name>port</name>
         <file>

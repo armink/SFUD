@@ -25,7 +25,7 @@ if not "%~1" == "" goto debugFile
 
 @echo on 
 
-"C:\Program Files\IAR Systems\Embedded Workbench 7.4\common\bin\cspybat" -f "E:\Program\STM32\SFUD\demo\stm32f2xx\EWARM\settings\SFUD.STM32F205RG.general.xcl" --backend -f "E:\Program\STM32\SFUD\demo\stm32f2xx\EWARM\settings\SFUD.STM32F205RG.driver.xcl" 
+"C:\Program Files\IAR Systems\Embedded Workbench 7.4\common\bin\cspybat" -f "E:\Program\STM32\SFUD\demo\stm32f2xx_rtt\EWARM\settings\SFUD.STM32F205RG.general.xcl" --backend -f "E:\Program\STM32\SFUD\demo\stm32f2xx_rtt\EWARM\settings\SFUD.STM32F205RG.driver.xcl" 
 
 @echo off 
 goto end 
@@ -34,7 +34,7 @@ goto end
 
 @echo on 
 
-"C:\Program Files\IAR Systems\Embedded Workbench 7.4\common\bin\cspybat" -f "E:\Program\STM32\SFUD\demo\stm32f2xx\EWARM\settings\SFUD.STM32F205RG.general.xcl" "--debug_file=%~1" --backend -f "E:\Program\STM32\SFUD\demo\stm32f2xx\EWARM\settings\SFUD.STM32F205RG.driver.xcl" 
+"C:\Program Files\IAR Systems\Embedded Workbench 7.4\common\bin\cspybat" -f "E:\Program\STM32\SFUD\demo\stm32f2xx_rtt\EWARM\settings\SFUD.STM32F205RG.general.xcl" "--debug_file=%~1" --backend -f "E:\Program\STM32\SFUD\demo\stm32f2xx_rtt\EWARM\settings\SFUD.STM32F205RG.driver.xcl" 
 
 @echo off 
 :end
