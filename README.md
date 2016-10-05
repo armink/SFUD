@@ -56,21 +56,33 @@
 sfud_err sfud_init(void)
 ```
 
-#### 2.2.2 获取 Flash 设备总数
+#### 2.2.2 获取 Flash 设备对象
 
-在 SFUD 中会定义 Flash 设备表，负责存放所有的 Flash 设备对象，所以 SFUD 支持多个 Flash 设备同时驱动。设备表的配置在 `/sfud/inc/sfud_cfg.h` 中 `SFUD_FLASH_DEVICE_TABLE` 宏定义，详细配置方法参照 [2.3 配置方法 Flash](#23-配置方法)），该方法将会返回 Flash 设备表的总长度。
+在 SFUD 配置文件中会定义 Flash 设备表，负责存放所有将要使用的 Flash 设备对象，所以 SFUD 支持多个 Flash 设备同时驱动。设备表的配置在 `/sfud/inc/sfud_cfg.h` 中 `SFUD_FLASH_DEVICE_TABLE` 宏定义，详细配置方法参照 [2.3 配置方法 Flash](#23-配置方法)）。本方法通过 Flash 设备位于设备表中索引值来返回 Flash 设备对象，超出设备表范围返回 `NULL` 。
+
+```C
+sfud_flash *sfud_get_device(size_t index)
+```
+
+|参数                                    |描述|
+|:-----                                  |:----|
+|index                                   |Flash 设备位于 FLash 设备表中的索引值|
+
+#### 2.2.3 获取 Flash 设备总数
+
+返回 Flash 设备表的总长度。
 
 ```C
 size_t sfud_get_device_num(void)
 ```
 
-#### 2.2.3 获取 Flash 设备表
+#### 2.2.4 获取 Flash 设备表
 
 ```C
 const sfud_flash *sfud_get_device_table(void)
 ```
 
-#### 2.2.4 读取 Flash 数据
+#### 2.2.5 读取 Flash 数据
 
 ```C
 sfud_err sfud_read(const sfud_flash *flash, uint32_t addr, size_t size, uint8_t *data)
@@ -83,7 +95,7 @@ sfud_err sfud_read(const sfud_flash *flash, uint32_t addr, size_t size, uint8_t 
 |size                                    |读取数据的大小|
 |data                                    |读取到的数据|
 
-#### 2.2.5 擦除 Flash 数据
+#### 2.2.6 擦除 Flash 数据
 
 ```C
 sfud_err sfud_erase(const sfud_flash *flash, uint32_t addr, size_t size)
@@ -95,7 +107,7 @@ sfud_err sfud_erase(const sfud_flash *flash, uint32_t addr, size_t size)
 |addr                                    |起始地址|
 |size                                    |擦除数据的大小|
 
-#### 2.2.6 擦除 Flash 全部数据
+#### 2.2.7 擦除 Flash 全部数据
 
 ```C
 sfud_err sfud_chip_erase(const sfud_flash *flash)
@@ -105,7 +117,7 @@ sfud_err sfud_chip_erase(const sfud_flash *flash)
 |:-----                                  |:----|
 |flash                                   |Flash 设备对象|
 
-#### 2.2.7 往 Flash 写数据
+#### 2.2.8 往 Flash 写数据
 
 ```C
 sfud_err sfud_write(const sfud_flash *flash, uint32_t addr, size_t size, const uint8_t *data)
@@ -118,7 +130,7 @@ sfud_err sfud_write(const sfud_flash *flash, uint32_t addr, size_t size, const u
 |size                                    |写数据的大小|
 |data                                    |待写入的数据|
 
-#### 2.2.8 先擦除再往 Flash 写数据
+#### 2.2.9 先擦除再往 Flash 写数据
 
 ```C
 sfud_err sfud_erase_write(const sfud_flash *flash, uint32_t addr, size_t size, const uint8_t *data)
@@ -131,7 +143,7 @@ sfud_err sfud_erase_write(const sfud_flash *flash, uint32_t addr, size_t size, c
 |size                                    |写数据的大小|
 |data                                    |待写入的数据|
 
-#### 2.2.9 读取 Flash 状态
+#### 2.2.10 读取 Flash 状态
 
 ```C
 sfud_err sfud_read_status(const sfud_flash *flash, uint8_t *status)
@@ -142,7 +154,7 @@ sfud_err sfud_read_status(const sfud_flash *flash, uint8_t *status)
 |flash                                   |Flash 设备对象|
 |status                                  |当前状态寄存器值|
 
-#### 2.2.10 写（修改） Flash 状态
+#### 2.2.11 写（修改） Flash 状态
 
 ```C
 sfud_err sfud_write_status(const sfud_flash *flash, bool is_volatile, uint8_t status)

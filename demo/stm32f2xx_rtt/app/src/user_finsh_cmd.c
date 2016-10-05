@@ -58,15 +58,15 @@ static void sf(uint8_t argc, char **argv) {
                 rt_kprintf("Usage:%s.\n", sf_help_info[CMD_SETECT_INDEX]);
                 if(sfud_get_device_num() > 0) {
                     for (size_t i = 0; i < sfud_get_device_num(); i++) {
-                        if (sfud_get_device_table()[i].init_ok) {
-                            rt_kprintf("The index %d flash device name is %s, ", i, sfud_get_device_table()[i].name);
-                            if (sfud_get_device_table()[i].chip.capacity < 1024 * 1024) {
-                                rt_kprintf("total is %d KB", sfud_get_device_table()[i].chip.capacity / 1024);
+                        if (sfud_get_device(i)->init_ok) {
+                            rt_kprintf("The index %d flash device name is %s, ", i, sfud_get_device(i)->name);
+                            if (sfud_get_device(i)->chip.capacity < 1024 * 1024) {
+                                rt_kprintf("total is %d KB", sfud_get_device(i)->chip.capacity / 1024);
                             } else {
-                                rt_kprintf("total is %d MB", sfud_get_device_table()[i].chip.capacity / 1024 / 1024);
+                                rt_kprintf("total is %d MB", sfud_get_device(i)->chip.capacity / 1024 / 1024);
                             }
-                            if (sfud_get_device_table()[i].chip.name != NULL) {
-                                rt_kprintf(", type is %d KB", sfud_get_device_table()[i].chip.name);
+                            if (sfud_get_device(i)->chip.name != NULL) {
+                                rt_kprintf(", type is %s", sfud_get_device(i)->chip.name);
                             }
                             rt_kprintf(".\n");
                         }
@@ -77,14 +77,14 @@ static void sf(uint8_t argc, char **argv) {
             } else {
                 size_t device_index = atol(argv[2]);
                 if (device_index >= sfud_get_device_num()) {
-                    rt_kprintf("Flash device index out bound[0:%d].\n", sfud_get_device_num());
+                    rt_kprintf("Flash device index out bound[0:%d].\n", sfud_get_device_num() - 1);
                     return;
                 }
-                if (!sfud_get_device_table()[device_index].init_ok) {
-                    rt_kprintf("Flash %s isn't initialize OK.\n", sfud_get_device_table()[device_index].name);
+                if (!sfud_get_device(device_index)->init_ok) {
+                    rt_kprintf("Flash %s isn't initialize OK.\n", sfud_get_device(device_index)->name);
                     return;
                 }
-                flash = sfud_get_device_table() + device_index;
+                flash = sfud_get_device(device_index);
                 if (flash->chip.capacity < 1024 * 1024) {
                     rt_kprintf("%d KB %s is current selected device.\n", flash->chip.capacity / 1024, flash->name);
                 } else {
@@ -261,7 +261,7 @@ static void flash_status(uint8_t argc, char **argv) {
             rt_kprintf("Flash device index out bound[0:%d].\n", sfud_get_device_num());
             return;
         }
-        const sfud_flash *flash = sfud_get_device_table() + device_index;
+        const sfud_flash *flash = sfud_get_device(device_index);
 
         if (!strcmp(operator, "read")) {
             uint8_t status;

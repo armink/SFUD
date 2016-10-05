@@ -67,37 +67,68 @@ extern void sfud_log_debug(const char *file, const long line, const char *format
 extern void sfud_log_info(const char *format, ...);
 
 /**
+ * SFUD initialize by flash device
+ *
+ * @param flash flash device
+ *
+ * @return result
+ */
+sfud_err sfud_device_init(sfud_flash *flash) {
+    sfud_err result = SFUD_SUCCESS;
+
+    /* hardware initialize */
+    result = hardware_init(flash);
+    if (result == SFUD_SUCCESS) {
+        result = software_init(flash);
+    }
+    if (result == SFUD_SUCCESS) {
+        flash->init_ok = true;
+        SFUD_INFO("%s flash device is initialize success.", flash->name);
+    } else {
+        flash->init_ok = false;
+        SFUD_INFO("Error: %s flash device is initialize fail.", flash->name);
+    }
+
+    return result;
+}
+
+/**
  * SFUD library initialize.
  *
  * @return result
  */
 sfud_err sfud_init(void) {
     sfud_err cur_flash_result = SFUD_SUCCESS, all_flash_result = SFUD_SUCCESS;
-    sfud_flash *flash;
 
     SFUD_DEBUG("Start initialize Serial Flash Universal Driver(SFUD) V%s.", SFUD_SW_VERSION);
+    SFUD_DEBUG("You can get the latest version on https://github.com/armink/SFUD .");
     /* initialize all flash device in flash device table */
     for (size_t i = 0; i < sizeof(flash_table) / sizeof(sfud_flash); i++) {
-        cur_flash_result = SFUD_SUCCESS;
-        flash = &flash_table[i];
         /* initialize flash device index of flash device information table */
-        flash->index = i;
-        /* hardware initialize */
-        cur_flash_result = hardware_init(flash);
-        if (cur_flash_result == SFUD_SUCCESS) {
-            cur_flash_result = software_init(flash);
-        }
-        if (cur_flash_result == SFUD_SUCCESS) {
-            flash->init_ok = true;
-            SFUD_INFO("%s flash device is initialize success.", flash->name);
-        } else {
-            all_flash_result = cur_flash_result;
-            flash->init_ok = false;
-            SFUD_INFO("Error: %s flash device is initialize fail.", flash->name);
+        flash_table[i].index = i;
+        cur_flash_result = sfud_device_init(&flash_table[i]);
+
+        if (cur_flash_result != SFUD_SUCCESS) {
+            cur_flash_result = cur_flash_result;
         }
     }
 
     return all_flash_result;
+}
+
+/**
+ * get flash device by its index which in the flash information table
+ *
+ * @param index the index which in the flash information table  @see flash_table
+ *
+ * @return flash device
+ */
+sfud_flash *sfud_get_device(size_t index) {
+    if (index < sfud_get_device_num()) {
+        return &flash_table[index];
+    } else {
+        return NULL;
+    }
 }
 
 /**
