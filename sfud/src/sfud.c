@@ -99,11 +99,12 @@ sfud_err sfud_device_init(sfud_flash *flash) {
  */
 sfud_err sfud_init(void) {
     sfud_err cur_flash_result = SFUD_SUCCESS, all_flash_result = SFUD_SUCCESS;
+    size_t i;
 
     SFUD_DEBUG("Start initialize Serial Flash Universal Driver(SFUD) V%s.", SFUD_SW_VERSION);
     SFUD_DEBUG("You can get the latest version on https://github.com/armink/SFUD .");
     /* initialize all flash device in flash device table */
-    for (size_t i = 0; i < sizeof(flash_table) / sizeof(sfud_flash); i++) {
+    for (i = 0; i < sizeof(flash_table) / sizeof(sfud_flash); i++) {
         /* initialize flash device index of flash device information table */
         flash_table[i].index = i;
         cur_flash_result = sfud_device_init(&flash_table[i]);
@@ -156,6 +157,7 @@ static sfud_err hardware_init(sfud_flash *flash) {
     extern sfud_err sfud_spi_port_init(sfud_flash *flash);
 
     sfud_err result = SFUD_SUCCESS;
+    size_t i;
 
     SFUD_ASSERT(flash);
 
@@ -190,7 +192,7 @@ static sfud_err hardware_init(sfud_flash *flash) {
             /* find the the smallest erase sector size for eraser. then will use this size for erase granularity */
             flash->chip.erase_gran = flash->sfdp.eraser[0].size;
             flash->chip.erase_gran_cmd = flash->sfdp.eraser[0].cmd;
-            for (size_t i = 1; i < SFUD_SFDP_ERASE_TYPE_MAX_NUM; i++) {
+            for (i = 1; i < SFUD_SFDP_ERASE_TYPE_MAX_NUM; i++) {
                 if (flash->sfdp.eraser[i].size != 0 && flash->chip.erase_gran > flash->sfdp.eraser[i].size) {
                     flash->chip.erase_gran = flash->sfdp.eraser[i].size;
                     flash->chip.erase_gran_cmd = flash->sfdp.eraser[i].cmd;
@@ -201,7 +203,7 @@ static sfud_err hardware_init(sfud_flash *flash) {
 
 #ifdef SFUD_USING_FLASH_INFO_TABLE
             /* read SFDP parameters failed then using SFUD library provided static parameter */
-            for (size_t i = 0; i < sizeof(flash_chip_table) / sizeof(sfud_flash_chip); i++) {
+            for (i = 0; i < sizeof(flash_chip_table) / sizeof(sfud_flash_chip); i++) {
                 if ((flash_chip_table[i].mf_id == flash->chip.mf_id)
                         && (flash_chip_table[i].type_id == flash->chip.type_id)
                         && (flash_chip_table[i].capacity_id == flash->chip.capacity_id)) {
@@ -228,7 +230,7 @@ static sfud_err hardware_init(sfud_flash *flash) {
     } else {
         const char *flash_mf_name = NULL;
         /* find the manufacturer information */
-        for (size_t i = 0; i < sizeof(mf_table) / sizeof(sfud_mf); i++) {
+        for (i = 0; i < sizeof(mf_table) / sizeof(sfud_mf); i++) {
             if (mf_table[i].id == flash->chip.mf_id) {
                 flash_mf_name = mf_table[i].name;
                 break;
@@ -865,14 +867,14 @@ static sfud_err wait_busy(const sfud_flash *flash) {
 }
 
 static void make_adress_byte_array(const sfud_flash *flash, uint32_t addr, uint8_t *array) {
-    uint8_t len;
+    uint8_t len, i;
 
     SFUD_ASSERT(flash);
     SFUD_ASSERT(array);
 
     len = flash->addr_in_4_byte ? 4 : 3;
 
-    for (uint8_t i = 0; i < len; i++) {
+    for (i = 0; i < len; i++) {
         array[i] = (addr >> ((len - (i + 1)) * 8)) & 0xFF;
     }
 }

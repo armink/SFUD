@@ -191,7 +191,7 @@ static bool read_basic_table(sfud_flash *flash, sfdp_para_header *basic_header) 
     /* parameter table address */
     uint32_t table_addr = basic_header->ptp;
     /* parameter table */
-    uint8_t table[BASIC_TABLE_LEN * 4] = { 0 };
+    uint8_t table[BASIC_TABLE_LEN * 4] = { 0 }, i, j;
 
     SFUD_ASSERT(flash);
     SFUD_ASSERT(basic_header);
@@ -204,7 +204,7 @@ static bool read_basic_table(sfud_flash *flash, sfdp_para_header *basic_header) 
     /* print JEDEC basic flash parameter table info */
     SFUD_DEBUG("JEDEC basic flash parameter table info:");
     SFUD_DEBUG("MSB-LSB  3    2    1    0");
-    for (uint8_t i = 0; i < BASIC_TABLE_LEN; i++) {
+    for (i = 0; i < BASIC_TABLE_LEN; i++) {
         SFUD_DEBUG("[%04d] 0x%02X 0x%02X 0x%02X 0x%02X", i + 1, table[i * 4 + 3], table[i * 4 + 2], table[i * 4 + 1],
                 table[i * 4]);
     }
@@ -306,7 +306,7 @@ static bool read_basic_table(sfud_flash *flash, sfdp_para_header *basic_header) 
     }
     SFUD_DEBUG("Capacity is %ld Bytes.", sfdp->capacity);
     /* get erase size and erase command  */
-    for (uint8_t i = 0, j = 0; i < SFUD_SFDP_ERASE_TYPE_MAX_NUM; i++) {
+    for (i = 0, j = 0; i < SFUD_SFDP_ERASE_TYPE_MAX_NUM; i++) {
         if (table[28 + 2 * i] != 0x00) {
             sfdp->eraser[j].size = 1 << table[28 + 2 * i];
             sfdp->eraser[j].cmd = table[28 + 2 * i + 1];
@@ -316,7 +316,7 @@ static bool read_basic_table(sfud_flash *flash, sfdp_para_header *basic_header) 
         }
     }
     /* sort the eraser size from small to large */
-    for (uint8_t i = 0, j = 0; i < SFUD_SFDP_ERASE_TYPE_MAX_NUM; i++) {
+    for (i = 0, j = 0; i < SFUD_SFDP_ERASE_TYPE_MAX_NUM; i++) {
         if (sfdp->eraser[i].size) {
             for (j = i + 1; j < SFUD_SFDP_ERASE_TYPE_MAX_NUM; j++) {
                 if (sfdp->eraser[j].size != 0 && sfdp->eraser[i].size > sfdp->eraser[j].size) {
@@ -363,7 +363,7 @@ static sfud_err read_sfdp_data(const sfud_flash *flash, uint32_t addr, uint8_t *
  * @return the eraser index of SFDP eraser table  @see sfud_sfdp.eraser[]
  */
 size_t sfud_sfdp_get_suitable_eraser(const sfud_flash *flash, uint32_t addr, size_t erase_size) {
-    size_t index = SMALLEST_ERASER_INDEX;
+    size_t index = SMALLEST_ERASER_INDEX, i;
     /* only used when flash supported SFDP */
     SFUD_ASSERT(flash->sfdp.available);
     /* the address isn't align by smallest eraser's size, then use the smallest eraser */
@@ -373,7 +373,7 @@ size_t sfud_sfdp_get_suitable_eraser(const sfud_flash *flash, uint32_t addr, siz
     /* Find the suitable eraser.
      * The largest size eraser is at the end of eraser table.
      * In order to decrease erase command counts, so the find process is from the end of eraser table. */
-    for (size_t i = SFUD_SFDP_ERASE_TYPE_MAX_NUM - 1;; i--) {
+    for (i = SFUD_SFDP_ERASE_TYPE_MAX_NUM - 1;; i--) {
         if ((flash->sfdp.eraser[i].size != 0) && (erase_size >= flash->sfdp.eraser[i].size)
                 && (addr % flash->sfdp.eraser[i].size == 0)) {
             index = i;

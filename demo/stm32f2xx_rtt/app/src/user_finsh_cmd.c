@@ -35,6 +35,7 @@ static void sf(uint8_t argc, char **argv) {
 
     sfud_err result = SFUD_SUCCESS;
     const static sfud_flash *flash = NULL;
+    size_t i = 0;
 
     const char* sf_help_info[] = {
             [CMD_SETECT_INDEX]    = "sf select [index]               - select a flash chip with device's index",
@@ -47,7 +48,7 @@ static void sf(uint8_t argc, char **argv) {
 
     if (argc < 2) {
         rt_kprintf("Usage:\n");
-        for (size_t i = 0; i < sizeof(sf_help_info) / sizeof(char*); i++) {
+        for (i = 0; i < sizeof(sf_help_info) / sizeof(char*); i++) {
             rt_kprintf("%s\n", sf_help_info[i]);
         }
         rt_kprintf("\n");
@@ -59,7 +60,7 @@ static void sf(uint8_t argc, char **argv) {
             if (argc < 3) {
                 rt_kprintf("Usage: %s.\n", sf_help_info[CMD_SETECT_INDEX]);
                 if(sfud_get_device_num() > 0) {
-                    for (size_t i = 0; i < sfud_get_device_num(); i++) {
+                    for (i = 0; i < sfud_get_device_num(); i++) {
                         if (sfud_get_device(i)->init_ok) {
                             rt_kprintf("The index %d flash device name is %s, ", i, sfud_get_device(i)->name);
                             if (sfud_get_device(i)->chip.capacity < 1024 * 1024) {
@@ -112,7 +113,7 @@ static void sf(uint8_t argc, char **argv) {
                             rt_kprintf("Read the %s flash data success. Start from 0x%08X, size is %ld. The data is:\n",
                                     flash->name, addr, size);
                             rt_kprintf("Offset (h) 00 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E 0F\n");
-                            for (size_t i = 0; i < size; i++) {
+                            for (i = 0; i < size; i++) {
                                 if (i % 16 == 0) {
                                     rt_kprintf("[%08X] ", addr + i);
                                 }
@@ -137,7 +138,7 @@ static void sf(uint8_t argc, char **argv) {
                     size = argc - 3;
                     uint8_t *data = rt_malloc(size);
                     if (data) {
-                        for (size_t i = 0; i < size; i++) {
+                        for (i = 0; i < size; i++) {
                             data[i] = atoi(argv[3 + i]);
                         }
                         result = sfud_write(flash, addr, size, data);
@@ -145,7 +146,7 @@ static void sf(uint8_t argc, char **argv) {
                             rt_kprintf("Write the %s flash data success. Start from 0x%08X, size is %ld.\n",
                                     flash->name, addr, size);
                             rt_kprintf("Write data: ");
-                            for (size_t i = 0; i < size; i++) {
+                            for (i = 0; i < size; i++) {
                                 rt_kprintf("%d ", data[i]);
                             }
                             rt_kprintf(".\n");
@@ -210,14 +211,14 @@ static void sf(uint8_t argc, char **argv) {
                     if (result == SFUD_SUCCESS) {
                         time_cast = rt_tick_get() - start_time;
                         rt_kprintf("Erase benchmark success, total time: %d.%03dS.\n", time_cast / RT_TICK_PER_SECOND,
-                                time_cast % RT_TICK_PER_SECOND / (RT_TICK_PER_SECOND / 1000));
+                                time_cast % RT_TICK_PER_SECOND / ((RT_TICK_PER_SECOND * 1 + 999) / 1000));
                     } else {
                         rt_kprintf("Erase benchmark has an error. Error code: %d.\n", result);
                     }
                     /* write test */
                     rt_kprintf("Writing the %s %ld bytes data, waiting...\n", flash->name, size);
                     start_time = rt_tick_get();
-                    for (size_t i = 0; i < size; i += write_size) {
+                    for (i = 0; i < size; i += write_size) {
                         result = sfud_write(flash, addr + i, write_size, write_data);
                         if (result != SFUD_SUCCESS) {
                             break;
@@ -226,14 +227,14 @@ static void sf(uint8_t argc, char **argv) {
                     if (result == SFUD_SUCCESS) {
                         time_cast = rt_tick_get() - start_time;
                         rt_kprintf("Write benchmark success, total time: %d.%03dS.\n", time_cast / RT_TICK_PER_SECOND,
-                                time_cast % RT_TICK_PER_SECOND / (RT_TICK_PER_SECOND / 1000));
+                                time_cast % RT_TICK_PER_SECOND / ((RT_TICK_PER_SECOND * 1 + 999) / 1000));
                     } else {
                         rt_kprintf("Write benchmark has an error. Error code: %d.\n", result);
                     }
                     /* read test */
                     rt_kprintf("Reading the %s %ld bytes data, waiting...\n", flash->name, size);
                     start_time = rt_tick_get();
-                    for (size_t i = 0; i < size; i += read_size) {
+                    for (i = 0; i < size; i += read_size) {
                         if (i + read_size <= size) {
                             result = sfud_read(flash, addr + i, read_size, read_data);
                         } else {
@@ -246,7 +247,7 @@ static void sf(uint8_t argc, char **argv) {
                     if (result == SFUD_SUCCESS) {
                         time_cast = rt_tick_get() - start_time;
                         rt_kprintf("Read benchmark success, total time: %d.%03dS.\n", time_cast / RT_TICK_PER_SECOND,
-                                time_cast % RT_TICK_PER_SECOND / (RT_TICK_PER_SECOND / 1000));
+                                time_cast % RT_TICK_PER_SECOND / ((RT_TICK_PER_SECOND * 1 + 999) / 1000));
                     } else {
                         rt_kprintf("Read benchmark has an error. Error code: %d.\n", result);
                     }
@@ -257,7 +258,7 @@ static void sf(uint8_t argc, char **argv) {
                 rt_free(read_data);
             } else {
                 rt_kprintf("Usage:\n");
-                for (size_t i = 0; i < sizeof(sf_help_info) / sizeof(char*); i++) {
+                for (i = 0; i < sizeof(sf_help_info) / sizeof(char*); i++) {
                     rt_kprintf("%s\n", sf_help_info[i]);
                 }
                 rt_kprintf("\n");
