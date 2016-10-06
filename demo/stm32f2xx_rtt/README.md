@@ -20,11 +20,12 @@
 ```
 msh >sf
 Usage:
-sf select [index]             - select a flash chip with device's index
-sf read addr size             - read 'size' bytes starting at 'addr'
-sf write addr data1 ... dataN - write some bytes 'data' to flash starting at 'addr'
-sf erase addr size            - erase 'size' bytes starting at 'addr'
-sf bench                      - full chip benchmark test
+sf select [index]               - select a flash chip with device's index
+sf read addr size               - read 'size' bytes starting at 'addr'
+sf write addr data1 ... dataN   - write some bytes 'data' to flash starting at 'addr'
+sf erase addr size              - erase 'size' bytes starting at 'addr'
+sf status [<volatile> <status>] - read or write '1:volatile|0:non-volatile' 'status'
+sf bench                        - full chip benchmark test
 
 ```
 
@@ -64,7 +65,22 @@ msh >sf erase 0 8192
 Erase the W25Q64 flash data success. Start from 0x00000000, size is 8192
 ```
 
-- 5、测试 Flash 全片的性能，命令及结果如下：
+- 5、读取/修改 Flash 状态寄存器
+
+读取 Flash 状态寄存器当前状态
+
+```
+msh >sf status
+The W25Q64 flash status register current value is 0x00.
+```
+
+修改 Flash 当前状态为 `0x1C` ,特性为 `易闪失（掉电丢失）` 的
+```
+msh >sf status 1 28
+Write the W25Q64 flash status register to 0x1C success.
+```
+
+- 6、测试 Flash 全片的性能，命令及结果如下：
 
 ```
 msh >sf bench
@@ -77,12 +93,6 @@ Read benchmark success, total time: 16.129S.
 ```
 
 更多性能测试结果见： [`/docs/zh/benchmark.txt`](https://github.com/armink/SFUD/blob/master/docs/zh/benchmark.txt)
-
-#### 1.1.2 读取/修改 Flash 状态命令
-
-```
-flash_status <read|write> <device_index> [<1:volatile|0:non-volatile> <status>]
-```
 
 ## 2、文件（夹）说明
 

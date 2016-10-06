@@ -26,21 +26,23 @@ MSH_CMD_EXPORT(get_cpuusage, Get control board cpu usage);
 
 static void sf(uint8_t argc, char **argv) {
 
-#define CMD_SETECT_INDEX     0
-#define CMD_READ_INDEX       1
-#define CMD_WRITE_INDEX      2
-#define CMD_ERASE_INDEX      3
-#define CMD_BENCH_INDEX      4
+#define CMD_SETECT_INDEX              0
+#define CMD_READ_INDEX                1
+#define CMD_WRITE_INDEX               2
+#define CMD_ERASE_INDEX               3
+#define CMD_RW_STATUS_INDEX           4
+#define CMD_BENCH_INDEX               5
 
     sfud_err result = SFUD_SUCCESS;
     const static sfud_flash *flash = NULL;
 
     const char* sf_help_info[] = {
-            [CMD_SETECT_INDEX] = "sf select [index]             - select a flash chip with device's index",
-            [CMD_READ_INDEX]   = "sf read addr size             - read 'size' bytes starting at 'addr'",
-            [CMD_WRITE_INDEX]  = "sf write addr data1 ... dataN - write some bytes 'data' to flash starting at 'addr'",
-            [CMD_ERASE_INDEX]  = "sf erase addr size            - erase 'size' bytes starting at 'addr'",
-            [CMD_BENCH_INDEX]  = "sf bench                      - full chip benchmark test",
+            [CMD_SETECT_INDEX]    = "sf select [index]               - select a flash chip with device's index",
+            [CMD_READ_INDEX]      = "sf read addr size               - read 'size' bytes starting at 'addr'",
+            [CMD_WRITE_INDEX]     = "sf write addr data1 ... dataN   - write some bytes 'data' to flash starting at 'addr'",
+            [CMD_ERASE_INDEX]     = "sf erase addr size              - erase 'size' bytes starting at 'addr'",
+            [CMD_RW_STATUS_INDEX] = "sf status [<volatile> <status>] - read or write '1:volatile|0:non-volatile' 'status'",
+            [CMD_BENCH_INDEX]     = "sf bench                        - full chip benchmark test",
     };
 
     if (argc < 2) {
@@ -55,7 +57,7 @@ static void sf(uint8_t argc, char **argv) {
 
         if (!strcmp(operator, "select")) {
             if (argc < 3) {
-                rt_kprintf("Usage:%s.\n", sf_help_info[CMD_SETECT_INDEX]);
+                rt_kprintf("Usage: %s.\n", sf_help_info[CMD_SETECT_INDEX]);
                 if(sfud_get_device_num() > 0) {
                     for (size_t i = 0; i < sfud_get_device_num(); i++) {
                         if (sfud_get_device(i)->init_ok) {
@@ -96,9 +98,9 @@ static void sf(uint8_t argc, char **argv) {
                 rt_kprintf("No flash device selected. Please run 'sf select'.\n");
                 return;
             }
-            if (!strcmp(operator, "read")) {
+            if (!rt_strcmp(operator, "read")) {
                 if (argc < 4) {
-                    rt_kprintf("Usage:%s.\n", sf_help_info[CMD_READ_INDEX]);
+                    rt_kprintf("Usage: %s.\n", sf_help_info[CMD_READ_INDEX]);
                     return;
                 } else {
                     addr = atol(argv[2]);
@@ -126,9 +128,9 @@ static void sf(uint8_t argc, char **argv) {
                         rt_kprintf("Low memory!\n");
                     }
                 }
-            } else if (!strcmp(operator, "write")) {
+            } else if (!rt_strcmp(operator, "write")) {
                 if (argc < 4) {
-                    rt_kprintf("Usage:%s.\n", sf_help_info[CMD_WRITE_INDEX]);
+                    rt_kprintf("Usage: %s.\n", sf_help_info[CMD_WRITE_INDEX]);
                     return;
                 } else {
                     addr = atol(argv[2]);
@@ -153,9 +155,9 @@ static void sf(uint8_t argc, char **argv) {
                         rt_kprintf("Low memory!\n");
                     }
                 }
-            } else if (!strcmp(operator, "erase")) {
+            } else if (!rt_strcmp(operator, "erase")) {
                 if (argc < 4) {
-                    rt_kprintf("Usage:%s.\n", sf_help_info[CMD_ERASE_INDEX]);
+                    rt_kprintf("Usage: %s.\n", sf_help_info[CMD_ERASE_INDEX]);
                     return;
                 } else {
                     addr = atol(argv[2]);
@@ -166,7 +168,25 @@ static void sf(uint8_t argc, char **argv) {
                                 addr, size);
                     }
                 }
-            } else if (!strcmp(operator, "bench")) {
+            } else if (!rt_strcmp(operator, "status")) {
+                if (argc < 3) {
+                    uint8_t status;
+                    result = sfud_read_status(flash, &status);
+                    if (result == SFUD_SUCCESS) {
+                        rt_kprintf("The %s flash status register current value is 0x%02X.\n", flash->name, status);
+                    }
+                } else if (argc == 4) {
+                    bool is_volatile = atoi(argv[2]);
+                    uint8_t status = atoi(argv[3]);
+                    result = sfud_write_status(flash, is_volatile, status);
+                    if (result == SFUD_SUCCESS) {
+                        rt_kprintf("Write the %s flash status register to 0x%02X success.\n", flash->name, status);
+                    }
+                } else {
+                    rt_kprintf("Usage: %s.\n", sf_help_info[CMD_RW_STATUS_INDEX]);
+                    return;
+                }
+            } else if (!rt_strcmp(operator, "bench")) {
                 /* full chip benchmark test */
                 addr = 0;
                 size = flash->chip.capacity;
@@ -182,7 +202,7 @@ static void sf(uint8_t argc, char **argv) {
                 uint8_t *write_data = rt_malloc(write_size), *read_data = rt_malloc(read_size);
 
                 if (write_data && read_data) {
-                    memset(write_data, 0x55, write_size);
+                    rt_memset(write_data, 0x55, write_size);
                     /* benchmark testing */
                     rt_kprintf("Erasing the %s %ld bytes data, waiting...\n", flash->name, size);
                     start_time = rt_tick_get();
@@ -249,42 +269,4 @@ static void sf(uint8_t argc, char **argv) {
         }
     }
 }
-MSH_CMD_EXPORT(sf, SPI Flash operate);
-
-static void flash_status(uint8_t argc, char **argv) {
-    if(argc < 2) {
-        rt_kprintf("Please input flash_status <read|write> <device_index> [<1:volatile|0:non-volatile> <status>].\n");
-    } else {
-        const char *operator = argv[1];
-        size_t device_index = atol(argv[2]);
-        if (device_index >= sfud_get_device_num()) {
-            rt_kprintf("Flash device index out bound[0:%d].\n", sfud_get_device_num());
-            return;
-        }
-        const sfud_flash *flash = sfud_get_device(device_index);
-
-        if (!strcmp(operator, "read")) {
-            uint8_t status;
-            if (sfud_read_status(flash, &status) == SFUD_SUCCESS) {
-                rt_kprintf("The %s flash status register value is 0x%02X.\n", flash->name, status);
-            } else {
-                rt_kprintf("Read the %s flash status register has an error!", flash->name);
-            }
-        } else if (!strcmp(operator, "write")) {
-            if (argc == 5) {
-                bool is_volatile = atoi(argv[3]);
-                uint8_t status = atoi(argv[4]);
-                if (sfud_write_status(flash, is_volatile, status) == SFUD_SUCCESS) {
-                    rt_kprintf("Write the %s flash status register to 0x%02X success.\n", flash->name, status);
-                } else {
-                    rt_kprintf("Write the %s flash status register to 0x%02X has an error!", status, flash->name);
-                }
-            } else {
-                rt_kprintf("Please input flash_status <read|write> <device_index> [<1:volatile|0:non-volatile> <status>].\n");
-            }
-        } else {
-            rt_kprintf("Please input flash_status <read|write> <device_index> [<1:volatile|0:non-volatile> <status>].\n");
-        }
-    }
-}
-MSH_CMD_EXPORT(flash_status, Flash status <read|write> <device_index> [<1:volatile|0:non-volatile> <status>]);
+MSH_CMD_EXPORT(sf, SPI Flash operate.);
