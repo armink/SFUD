@@ -43,7 +43,7 @@ static void sf(uint8_t argc, char **argv) {
             [CMD_WRITE_INDEX]     = "sf write addr data1 ... dataN   - write some bytes 'data' to flash starting at 'addr'",
             [CMD_ERASE_INDEX]     = "sf erase addr size              - erase 'size' bytes starting at 'addr'",
             [CMD_RW_STATUS_INDEX] = "sf status [<volatile> <status>] - read or write '1:volatile|0:non-volatile' 'status'",
-            [CMD_BENCH_INDEX]     = "sf bench                        - full chip benchmark test",
+            [CMD_BENCH_INDEX]     = "sf bench                        - full chip benchmark. DANGER: it will erase full chip!",
     };
 
     if (argc < 2) {
