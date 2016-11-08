@@ -34,7 +34,9 @@ sf bench                        - full chip benchmark. DANGER: It will erase ful
 
 ```
 msh >sf probe spi10
-8 MB W25Q64 is current selected device.
+[SFUD]Find a Winbond flash chip. Size is 8388608 bytes.
+[SFUD]sf_cmd flash device is initialize success.
+8 MB sf_cmd is current selected device.
 ```
 
 - 2、读取从地址 0 开始，共计 64 字节数据，输入下面的命令：
