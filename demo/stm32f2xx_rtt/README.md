@@ -11,7 +11,7 @@
 
 ### 1.1、使用方法
 
-- Flash 设备：在 `components/sfud/inc/sfud_cfg.h` 中的 `SFUD_FLASH_DEVICE_TABLE` 宏定义有定义两个 Flash 设备。第一个为板载的 `W25Q64` ，第二个是我自己外接的 `W25Q16`，如果没有外接或外接的是其他 Flash ，可以参考 [首页文档中介绍的 Flash 设备表配置方法](https://github.com/armink/SFUD#234-flash-设备表) 进行修改。
+- Flash 设备：在 `components/sfud/inc/sfud_cfg.h` 中的 `SFUD_FLASH_DEVICE_TABLE` 宏定义有定义两个 Flash 设备。第一个为板载的 `W25Q64` ，第二个是我自己外接的 `W25Q128`，如果没有外接或外接的是其他 Flash ，可以参考 [首页文档中介绍的 Flash 设备表配置方法](https://github.com/armink/SFUD#234-flash-设备表) 进行修改。
 - SFUD 初始化：在 `app/src/app_task.c` 的 `sys_init_thread` 线程中完成对 SFUD 的初始化。
 - 连接终端：初始化完成后可以将电脑中的终端与开发板连接（串口1），在终端中输入如下命令，完成测试过程。
 
@@ -20,21 +20,20 @@
 ```
 msh >sf
 Usage:
-sf select [index]               - select a flash chip with device's index
+sf probe [spi_device]           - probe and init SPI flash by given 'spi_device'
 sf read addr size               - read 'size' bytes starting at 'addr'
 sf write addr data1 ... dataN   - write some bytes 'data' to flash starting at 'addr'
 sf erase addr size              - erase 'size' bytes starting at 'addr'
 sf status [<volatile> <status>] - read or write '1:volatile|0:non-volatile' 'status'
-sf bench                        - full chip benchmark test
-
+sf bench                        - full chip benchmark. DANGER: It will erase full chip!
 ```
 
 例如：
 
-- 1、选择第一个(即索引值为 0) Flash 设备进行操作，输入下面的命令。选择后，接下来的操作都将针对此 Flash 设备：
+- 1、探测并选择 SPI 设备名称为 `spi10` 所连接 Flash 设备进行操作，输入下面的命令。选择后，接下来的操作都将针对此 Flash 设备：
 
 ```
-msh >sf select 0
+msh >sf probe spi10
 8 MB W25Q64 is current selected device.
 ```
 
@@ -83,7 +82,7 @@ Write the W25Q64 flash status register to 0x1C success.
 - 6、测试 Flash 全片的性能，命令及结果如下：
 
 ```
-msh >sf bench
+msh >sf bench yes
 Erasing the W25Q64 8388608 bytes data, waiting...
 Erase benchmark success, total time: 20.591S.
 Writing the W25Q64 8388608 bytes data, waiting...
@@ -96,9 +95,17 @@ Read benchmark success, total time: 16.129S.
 
 ## 2、文件（夹）说明
 
-- `components\sfud\port\sfud_port.c` 移植参考文件
-- `components\sfud\inc\sfud_cfg.c` 库配置文件
-
 `RVMDK` 下为Keil工程文件（后期加入）
 
 `EWARM` 下为IAR工程文件
+
+## 3、配置方法
+
+在 `rtconfig.h` 可增加如下配置信息，每个配置的功能详见 [`rt-thread/components/drivers/spi/sfud/inc/sfud_cfg.h`](https://github.com/RT-Thread/rt-thread/blob/master/components/drivers/spi/sfud/inc/sfud_cfg.h)
+
+``` C
+#define RT_USING_SFUD                      //必选
+#define RT_DEBUG_SFUD                  1   //可选
+#define RT_SFUD_USING_SFDP                 //可选
+#define RT_SFUD_USING_FLASH_INFO_TABLE     //可选
+```
