@@ -11,8 +11,8 @@
 
 ### 1.1、使用方法
 
-- Flash 设备：在 `components/sfud/inc/sfud_cfg.h` 中的 `SFUD_FLASH_DEVICE_TABLE` 宏定义有定义两个 Flash 设备。第一个为板载的 `W25Q64` ，第二个是我自己外接的 `W25Q128`，如果没有外接或外接的是其他 Flash ，可以参考 [首页文档中介绍的 Flash 设备表配置方法](https://github.com/armink/SFUD#234-flash-设备表) 进行修改。
-- SFUD 初始化：在 `app/src/app_task.c` 的 `sys_init_thread` 线程中完成对 SFUD 的初始化。
+- Flash 设备： RT-Thread SPI 设备 `spi10` 连接的为板载的 `W25Q64` ，`spi30` SPI 设备连接的是我自己外接的 `W25Q128`。
+- SFUD 初始化：在 `app/src/app_task.c` 的 `sys_init_thread` 线程中完成对串行 Flash 的初始化。
 - 连接终端：初始化完成后可以将电脑中的终端与开发板连接（串口1），在终端中输入如下命令，完成测试过程。
 
 #### 1.1.1 Flash 操作命令
