@@ -64,6 +64,12 @@
 // <bool name="RT_USING_SERIAL" description="Using Serial" default="true" />
 #define RT_USING_SERIAL
 #define RT_SERIAL_RB_BUFSZ 1024
+#define RT_USING_SPI
+//#define SPI_USING_DMA
+#define RT_USING_SFUD
+#define RT_DEBUG_SFUD                  1
+#define RT_SFUD_USING_SFDP
+#define RT_SFUD_USING_FLASH_INFO_TABLE
 
 /* SECTION: Console options */
 #define RT_USING_CONSOLE

@@ -29,21 +29,34 @@
 #ifndef _SFUD_CFG_H_
 #define _SFUD_CFG_H_
 
+#include <rtconfig.h>
+
+/**
+ * It will print more information on debug mode.
+ * #define RT_DEBUG_SFUD  1: open debug mode */
+#if RT_DEBUG_SFUD
 #define SFUD_DEBUG_MODE
+#endif
 
+/**
+ * Using probe flash JEDEC SFDP parameter.
+ */
+#ifdef RT_SFUD_USING_SFDP
 #define SFUD_USING_SFDP
+#endif
 
+/**
+ * Using probe flash JEDEC ID then query defined supported flash chip information table. @see SFUD_FLASH_CHIP_TABLE
+ */
+#ifdef RT_SFUD_USING_FLASH_INFO_TABLE
 #define SFUD_USING_FLASH_INFO_TABLE
+#endif
 
-enum {
-    SFUD_W25Q64_DEVICE_INDEX = 0,
-    SFUD_W25Q16_DEVICE_INDEX = 1,
-};
 
-#define SFUD_FLASH_DEVICE_TABLE                                                \
-{                                                                              \
-    [SFUD_W25Q64_DEVICE_INDEX] = {.name = "W25Q64", .spi.name = "SPI1"},       \
-    [SFUD_W25Q16_DEVICE_INDEX] = {.name = "W25Q16", .spi.name = "SPI3"},       \
-}
+#if !defined(RT_SFUD_USING_SFDP) && !defined(RT_SFUD_USING_FLASH_INFO_TABLE)
+#error "Please configure RT_SFUD_USING_SFDP or RT_SFUD_USING_FLASH_INFO_TABLE at least one kind of mode (in rtconfig.h)."
+#endif
+
+#define SFUD_FLASH_DEVICE_TABLE {0}
 
 #endif /* _SFUD_CFG_H_ */

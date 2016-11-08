@@ -313,13 +313,17 @@
           <name>CCIncludePath2</name>
           <state>$PROJ_DIR$\..\app\inc</state>
           <state>$PROJ_DIR$\..\components\rtt_uart</state>
+          <state>$PROJ_DIR$\..\components\rtt_spi</state>
           <state>$PROJ_DIR$\..\components\others</state>
           <state>$PROJ_DIR$\..\Libraries\CMSIS\CM3\DeviceSupport\ST\STM32F2xx</state>
           <state>$PROJ_DIR$\..\Libraries\STM32F2xx_StdPeriph_Driver\inc</state>
           <state>$PROJ_DIR$\..\RT-Thread-2.1.0\include</state>
           <state>$PROJ_DIR$\..\RT-Thread-2.1.0\components\drivers\include</state>
           <state>$PROJ_DIR$\..\RT-Thread-2.1.0\components\drivers\include\drivers</state>
+          <state>$PROJ_DIR$\..\RT-Thread-2.1.0\components\drivers\spi</state>
+          <state>$PROJ_DIR$\..\RT-Thread-2.1.0\components\drivers\spi\sfud\inc</state>
           <state>$PROJ_DIR$\..\RT-Thread-2.1.0\components\finsh</state>
+          <state>$PROJ_DIR$\..\RT-Thread-2.1.0\components\utilities\ymodem</state>
           <state>$PROJ_DIR$\..\components\sfud\inc</state>
           <state>$PROJ_DIR$\..\..\..\sfud\inc</state>
         </option>
@@ -1002,6 +1006,12 @@
       </file>
     </group>
     <group>
+      <name>rtt_spi</name>
+      <file>
+        <name>$PROJ_DIR$\..\components\rtt_spi\spi_master.c</name>
+      </file>
+    </group>
+    <group>
       <name>rtt_uart</name>
       <file>
         <name>$PROJ_DIR$\..\components\rtt_uart\usart.c</name>
@@ -1009,12 +1019,6 @@
     </group>
     <group>
       <name>sfud</name>
-      <group>
-        <name>port</name>
-        <file>
-          <name>$PROJ_DIR$\..\components\sfud\port\sfud_port.c</name>
-        </file>
-      </group>
       <group>
         <name>src</name>
         <file>
@@ -1138,27 +1142,45 @@
     <name>RT-Thread-2.1.0</name>
     <group>
       <name>drivers</name>
-      <file>
-        <name>$PROJ_DIR$\..\RT-Thread-2.1.0\components\drivers\src\completion.c</name>
-      </file>
-      <file>
-        <name>$PROJ_DIR$\..\RT-Thread-2.1.0\components\drivers\src\dataqueue.c</name>
-      </file>
-      <file>
-        <name>$PROJ_DIR$\..\RT-Thread-2.1.0\components\drivers\src\pipe.c</name>
-      </file>
-      <file>
-        <name>$PROJ_DIR$\..\RT-Thread-2.1.0\components\drivers\src\portal.c</name>
-      </file>
-      <file>
-        <name>$PROJ_DIR$\..\RT-Thread-2.1.0\components\drivers\src\ringbuffer.c</name>
-      </file>
-      <file>
-        <name>$PROJ_DIR$\..\RT-Thread-2.1.0\components\drivers\serial\serial.c</name>
-      </file>
-      <file>
-        <name>$PROJ_DIR$\..\RT-Thread-2.1.0\components\drivers\src\workqueue.c</name>
-      </file>
+      <group>
+        <name>serial</name>
+        <file>
+          <name>$PROJ_DIR$\..\RT-Thread-2.1.0\components\drivers\serial\serial.c</name>
+        </file>
+      </group>
+      <group>
+        <name>spi</name>
+        <file>
+          <name>$PROJ_DIR$\..\RT-Thread-2.1.0\components\drivers\spi\spi_core.c</name>
+        </file>
+        <file>
+          <name>$PROJ_DIR$\..\RT-Thread-2.1.0\components\drivers\spi\spi_dev.c</name>
+        </file>
+        <file>
+          <name>$PROJ_DIR$\..\RT-Thread-2.1.0\components\drivers\spi\spi_flash_sfud.c</name>
+        </file>
+      </group>
+      <group>
+        <name>src</name>
+        <file>
+          <name>$PROJ_DIR$\..\RT-Thread-2.1.0\components\drivers\src\completion.c</name>
+        </file>
+        <file>
+          <name>$PROJ_DIR$\..\RT-Thread-2.1.0\components\drivers\src\dataqueue.c</name>
+        </file>
+        <file>
+          <name>$PROJ_DIR$\..\RT-Thread-2.1.0\components\drivers\src\pipe.c</name>
+        </file>
+        <file>
+          <name>$PROJ_DIR$\..\RT-Thread-2.1.0\components\drivers\src\portal.c</name>
+        </file>
+        <file>
+          <name>$PROJ_DIR$\..\RT-Thread-2.1.0\components\drivers\src\ringbuffer.c</name>
+        </file>
+        <file>
+          <name>$PROJ_DIR$\..\RT-Thread-2.1.0\components\drivers\src\workqueue.c</name>
+        </file>
+      </group>
     </group>
     <group>
       <name>finsh</name>
@@ -1272,6 +1294,12 @@
       </file>
       <file>
         <name>$PROJ_DIR$\..\RT-Thread-2.1.0\libcpu\arm\cortex-m3\cpuport.c</name>
+      </file>
+    </group>
+    <group>
+      <name>ymodem</name>
+      <file>
+        <name>$PROJ_DIR$\..\RT-Thread-2.1.0\components\utilities\ymodem\ymodem.c</name>
       </file>
     </group>
   </group>

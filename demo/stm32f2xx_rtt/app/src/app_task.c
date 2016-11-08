@@ -9,6 +9,8 @@
 #include <finsh.h>
 #include <components.h>
 #include <sfud.h>
+#include <spi_flash.h>
+#include <spi_flash_sfud.h>
 
 #ifdef __CC_ARM
 extern int Image$$RW_IRAM1$$ZI$$Limit;
@@ -26,6 +28,7 @@ static rt_uint8_t thread_sys_monitor_stack[512];
 struct rt_thread thread_sys_monitor;
 uint8_t cpu_usage_major, cpu_usage_minor;
 
+rt_spi_flash_device_t w25q64, w25q128;
 
 /**
  * System monitor thread.
@@ -79,13 +82,11 @@ void sys_init_thread(void* parameter){
     cpu_usage_init();
 
     /* SFUD initialize */
-    if (sfud_init() == SFUD_SUCCESS) {
-        /* initialize OK and switch to running status */
-        set_system_status(SYSTEM_STATUS_RUN);
-    } else {
-        /* initialize fail and switch to fault status */
-        set_system_status(SYSTEM_STATUS_FAULT);
-    }
+    w25q64 = rt_sfud_flash_probe("W25Q64", "spi10");
+    w25q128 = rt_sfud_flash_probe("W25Q128", "spi30");
+    
+    /* initialize OK and switch to running status */
+    set_system_status(SYSTEM_STATUS_RUN);
 
     rt_thread_delete(rt_thread_self());
 }

@@ -10,6 +10,9 @@
 #include <finsh.h>
 #include <cpuusage.h>
 #include <sfud.h>
+#include <ymodem.h>
+#include <shell.h>
+#include <spi_flash.h>
 
 static void reboot(uint8_t argc, char **argv) {
     NVIC_SystemReset();
@@ -24,250 +27,57 @@ static void get_cpuusage(void) {
 }
 MSH_CMD_EXPORT(get_cpuusage, Get control board cpu usage);
 
-static void sf(uint8_t argc, char **argv) {
+#define FILE_FLASH_ADDR                     0 /* 传输的 Flash 目标地址 */
 
-#define CMD_SETECT_INDEX              0
-#define CMD_READ_INDEX                1
-#define CMD_WRITE_INDEX               2
-#define CMD_ERASE_INDEX               3
-#define CMD_RW_STATUS_INDEX           4
-#define CMD_BENCH_INDEX               5
+extern rt_spi_flash_device_t w25q128;
+static uint32_t ymodem_file_total_size, ymodem_file_cur_size;
+static enum rym_code ymodem_on_begin(struct rym_ctx *ctx, rt_uint8_t *buf, rt_size_t len) {
+    char *file_name, *file_size;
 
-    sfud_err result = SFUD_SUCCESS;
-    const static sfud_flash *flash = NULL;
-    size_t i = 0;
+    /* calculate and store file size */
+    file_name = (char *) &buf[0];
+    file_size = (char *) &buf[rt_strlen(file_name) + 1];
+    ymodem_file_total_size = atol(file_size);
+    ymodem_file_cur_size = 0;
 
-    const char* sf_help_info[] = {
-            [CMD_SETECT_INDEX]    = "sf select [index]               - select a flash chip with device's index",
-            [CMD_READ_INDEX]      = "sf read addr size               - read 'size' bytes starting at 'addr'",
-            [CMD_WRITE_INDEX]     = "sf write addr data1 ... dataN   - write some bytes 'data' to flash starting at 'addr'",
-            [CMD_ERASE_INDEX]     = "sf erase addr size              - erase 'size' bytes starting at 'addr'",
-            [CMD_RW_STATUS_INDEX] = "sf status [<volatile> <status>] - read or write '1:volatile|0:non-volatile' 'status'",
-            [CMD_BENCH_INDEX]     = "sf bench                        - full chip benchmark. DANGER: it will erase full chip!",
-    };
-
-    if (argc < 2) {
-        rt_kprintf("Usage:\n");
-        for (i = 0; i < sizeof(sf_help_info) / sizeof(char*); i++) {
-            rt_kprintf("%s\n", sf_help_info[i]);
-        }
-        rt_kprintf("\n");
-    } else {
-        const char *operator = argv[1];
-        uint32_t addr, size;
-
-        if (!strcmp(operator, "select")) {
-            if (argc < 3) {
-                rt_kprintf("Usage: %s.\n", sf_help_info[CMD_SETECT_INDEX]);
-                if(sfud_get_device_num() > 0) {
-                    for (i = 0; i < sfud_get_device_num(); i++) {
-                        if (sfud_get_device(i)->init_ok) {
-                            rt_kprintf("The index %d flash device name is %s, ", i, sfud_get_device(i)->name);
-                            if (sfud_get_device(i)->chip.capacity < 1024 * 1024) {
-                                rt_kprintf("total is %d KB", sfud_get_device(i)->chip.capacity / 1024);
-                            } else {
-                                rt_kprintf("total is %d MB", sfud_get_device(i)->chip.capacity / 1024 / 1024);
-                            }
-                            if (sfud_get_device(i)->chip.name != NULL) {
-                                rt_kprintf(", type is %s", sfud_get_device(i)->chip.name);
-                            }
-                            rt_kprintf(".\n");
-                        }
-                    }
-                } else {
-                    rt_kprintf("There is no flash device in device table.\n");
-                }
-            } else {
-                size_t device_index = atol(argv[2]);
-                if (device_index >= sfud_get_device_num()) {
-                    rt_kprintf("Flash device index out bound[0:%d].\n", sfud_get_device_num() - 1);
-                    return;
-                }
-                if (!sfud_get_device(device_index)->init_ok) {
-                    rt_kprintf("Flash %s isn't initialize OK.\n", sfud_get_device(device_index)->name);
-                    return;
-                }
-                flash = sfud_get_device(device_index);
-                if (flash->chip.capacity < 1024 * 1024) {
-                    rt_kprintf("%d KB %s is current selected device.\n", flash->chip.capacity / 1024, flash->name);
-                } else {
-                    rt_kprintf("%d MB %s is current selected device.\n", flash->chip.capacity / 1024 / 1024, flash->name);
-                }
-            }
-        } else {
-            if (!flash) {
-                rt_kprintf("No flash device selected. Please run 'sf select'.\n");
-                return;
-            }
-            if (!rt_strcmp(operator, "read")) {
-                if (argc < 4) {
-                    rt_kprintf("Usage: %s.\n", sf_help_info[CMD_READ_INDEX]);
-                    return;
-                } else {
-                    addr = atol(argv[2]);
-                    size = atol(argv[3]);
-                    uint8_t *data = rt_malloc(size);
-                    if (data) {
-                        result = sfud_read(flash, addr, size, data);
-                        if (result == SFUD_SUCCESS) {
-                            rt_kprintf("Read the %s flash data success. Start from 0x%08X, size is %ld. The data is:\n",
-                                    flash->name, addr, size);
-                            rt_kprintf("Offset (h) 00 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E 0F\n");
-                            for (i = 0; i < size; i++) {
-                                if (i % 16 == 0) {
-                                    rt_kprintf("[%08X] ", addr + i);
-                                }
-                                rt_kprintf("%02X ", data[i]);
-                                if (((i + 1) % 16 == 0) || i == size - 1) {
-                                    rt_kprintf("\n");
-                                }
-                            }
-                            rt_kprintf("\n");
-                        }
-                        rt_free(data);
-                    } else {
-                        rt_kprintf("Low memory!\n");
-                    }
-                }
-            } else if (!rt_strcmp(operator, "write")) {
-                if (argc < 4) {
-                    rt_kprintf("Usage: %s.\n", sf_help_info[CMD_WRITE_INDEX]);
-                    return;
-                } else {
-                    addr = atol(argv[2]);
-                    size = argc - 3;
-                    uint8_t *data = rt_malloc(size);
-                    if (data) {
-                        for (i = 0; i < size; i++) {
-                            data[i] = atoi(argv[3 + i]);
-                        }
-                        result = sfud_write(flash, addr, size, data);
-                        if (result == SFUD_SUCCESS) {
-                            rt_kprintf("Write the %s flash data success. Start from 0x%08X, size is %ld.\n",
-                                    flash->name, addr, size);
-                            rt_kprintf("Write data: ");
-                            for (i = 0; i < size; i++) {
-                                rt_kprintf("%d ", data[i]);
-                            }
-                            rt_kprintf(".\n");
-                        }
-                        rt_free(data);
-                    } else {
-                        rt_kprintf("Low memory!\n");
-                    }
-                }
-            } else if (!rt_strcmp(operator, "erase")) {
-                if (argc < 4) {
-                    rt_kprintf("Usage: %s.\n", sf_help_info[CMD_ERASE_INDEX]);
-                    return;
-                } else {
-                    addr = atol(argv[2]);
-                    size = atol(argv[3]);
-                    result = sfud_erase(flash, addr, size);
-                    if (result == SFUD_SUCCESS) {
-                        rt_kprintf("Erase the %s flash data success. Start from 0x%08X, size is %ld.\n", flash->name,
-                                addr, size);
-                    }
-                }
-            } else if (!rt_strcmp(operator, "status")) {
-                if (argc < 3) {
-                    uint8_t status;
-                    result = sfud_read_status(flash, &status);
-                    if (result == SFUD_SUCCESS) {
-                        rt_kprintf("The %s flash status register current value is 0x%02X.\n", flash->name, status);
-                    }
-                } else if (argc == 4) {
-                    bool is_volatile = atoi(argv[2]);
-                    uint8_t status = atoi(argv[3]);
-                    result = sfud_write_status(flash, is_volatile, status);
-                    if (result == SFUD_SUCCESS) {
-                        rt_kprintf("Write the %s flash status register to 0x%02X success.\n", flash->name, status);
-                    }
-                } else {
-                    rt_kprintf("Usage: %s.\n", sf_help_info[CMD_RW_STATUS_INDEX]);
-                    return;
-                }
-            } else if (!rt_strcmp(operator, "bench")) {
-                /* full chip benchmark test */
-                addr = 0;
-                size = flash->chip.capacity;
-                uint32_t start_time, time_cast;
-                rt_uint32_t total_mem, used_mem, max_uesd_mem;
-                rt_memory_info(&total_mem, &used_mem, &max_uesd_mem);
-                size_t write_size = SFUD_WRITE_MAX_PAGE_SIZE, read_size;
-                if ((total_mem - used_mem) / 2 < size) {
-                    read_size = (total_mem - used_mem) / 2;
-                } else {
-                    read_size = size;
-                }
-                uint8_t *write_data = rt_malloc(write_size), *read_data = rt_malloc(read_size);
-
-                if (write_data && read_data) {
-                    rt_memset(write_data, 0x55, write_size);
-                    /* benchmark testing */
-                    rt_kprintf("Erasing the %s %ld bytes data, waiting...\n", flash->name, size);
-                    start_time = rt_tick_get();
-                    result = sfud_erase(flash, addr, size);
-                    if (result == SFUD_SUCCESS) {
-                        time_cast = rt_tick_get() - start_time;
-                        rt_kprintf("Erase benchmark success, total time: %d.%03dS.\n", time_cast / RT_TICK_PER_SECOND,
-                                time_cast % RT_TICK_PER_SECOND / ((RT_TICK_PER_SECOND * 1 + 999) / 1000));
-                    } else {
-                        rt_kprintf("Erase benchmark has an error. Error code: %d.\n", result);
-                    }
-                    /* write test */
-                    rt_kprintf("Writing the %s %ld bytes data, waiting...\n", flash->name, size);
-                    start_time = rt_tick_get();
-                    for (i = 0; i < size; i += write_size) {
-                        result = sfud_write(flash, addr + i, write_size, write_data);
-                        if (result != SFUD_SUCCESS) {
-                            break;
-                        }
-                    }
-                    if (result == SFUD_SUCCESS) {
-                        time_cast = rt_tick_get() - start_time;
-                        rt_kprintf("Write benchmark success, total time: %d.%03dS.\n", time_cast / RT_TICK_PER_SECOND,
-                                time_cast % RT_TICK_PER_SECOND / ((RT_TICK_PER_SECOND * 1 + 999) / 1000));
-                    } else {
-                        rt_kprintf("Write benchmark has an error. Error code: %d.\n", result);
-                    }
-                    /* read test */
-                    rt_kprintf("Reading the %s %ld bytes data, waiting...\n", flash->name, size);
-                    start_time = rt_tick_get();
-                    for (i = 0; i < size; i += read_size) {
-                        if (i + read_size <= size) {
-                            result = sfud_read(flash, addr + i, read_size, read_data);
-                        } else {
-                            result = sfud_read(flash, addr + i, size - i, read_data);
-                        }
-                        if (result != SFUD_SUCCESS) {
-                            break;
-                        }
-                    }
-                    if (result == SFUD_SUCCESS) {
-                        time_cast = rt_tick_get() - start_time;
-                        rt_kprintf("Read benchmark success, total time: %d.%03dS.\n", time_cast / RT_TICK_PER_SECOND,
-                                time_cast % RT_TICK_PER_SECOND / ((RT_TICK_PER_SECOND * 1 + 999) / 1000));
-                    } else {
-                        rt_kprintf("Read benchmark has an error. Error code: %d.\n", result);
-                    }
-                } else {
-                    rt_kprintf("Low memory!\n");
-                }
-                rt_free(write_data);
-                rt_free(read_data);
-            } else {
-                rt_kprintf("Usage:\n");
-                for (i = 0; i < sizeof(sf_help_info) / sizeof(char*); i++) {
-                    rt_kprintf("%s\n", sf_help_info[i]);
-                }
-                rt_kprintf("\n");
-                return;
-            }
-            if (result != SFUD_SUCCESS) {
-                rt_kprintf("This flash operate has an error. Error code: %d.\n", result);
-            }
-        }
+    /* erase flash */
+    if (sfud_erase((sfud_flash_t)(w25q128->user_data), FILE_FLASH_ADDR, ymodem_file_total_size)
+            != SFUD_SUCCESS) {
+        /* if erase fail then quit this session */
+        return RYM_CODE_CAN;
     }
+
+    return RYM_CODE_ACK;
 }
-MSH_CMD_EXPORT(sf, SPI Flash operate.);
+
+static enum rym_code ymodem_on_data(struct rym_ctx *ctx, rt_uint8_t *buf, rt_size_t len) {
+    /* write file to flash */
+    if (sfud_write((sfud_flash_t)(w25q128->user_data), FILE_FLASH_ADDR + ymodem_file_cur_size, len, buf)
+            != SFUD_SUCCESS) {
+        /* if write fail then quit this session */
+        return RYM_CODE_CAN;
+    }
+    ymodem_file_cur_size += len;
+    return RYM_CODE_ACK;
+}
+
+static void ymodem(uint8_t argc, char **argv) {
+    struct rym_ctx rctx;
+
+    rt_kprintf("Please select a file and use Ymodem to send.\r\n");
+    /* close finsh echo */
+    finsh_set_echo(false);
+    if (!rym_recv_on_device(&rctx, rt_device_find(RT_CONSOLE_DEVICE_NAME), RT_DEVICE_OFLAG_RDWR | RT_DEVICE_FLAG_INT_RX,
+            ymodem_on_begin, ymodem_on_data, NULL, RT_TICK_PER_SECOND)) {
+        /* wait some time for terminal response finish */
+        rt_thread_delay(RT_TICK_PER_SECOND);
+        rt_kprintf("Write file to flash success.\n");
+    } else {
+        /* wait some time for terminal response finish */
+        rt_thread_delay(RT_TICK_PER_SECOND);
+        rt_kprintf("Write file to flash failed.\n");
+    }
+    /* reopen finsh echo */
+    finsh_set_echo(true);
+}
+MSH_CMD_EXPORT(ymodem, save file to flash by ymodem)
