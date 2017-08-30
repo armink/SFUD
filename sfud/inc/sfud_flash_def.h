@@ -115,6 +115,7 @@ typedef struct {
     {"M25P32", SFUD_MF_ID_MICRON, 0x20, 0x16, 4*1024*1024, SFUD_WM_PAGE_256B, 64*1024, 0xD8},                    \
     {"EN25Q32B", SFUD_MF_ID_EON, 0x30, 0x16, 4*1024*1024, SFUD_WM_PAGE_256B, 4096, 0x20},                        \
     {"GD25Q64B", SFUD_MF_ID_GIGADEVICE, 0x40, 0x17, 8*1024*1024, SFUD_WM_PAGE_256B, 4096, 0x20},                 \
+    {"GD25Q16B", SFUD_MF_ID_GIGADEVICE, 0x40, 0x15, 2*1024*1024, SFUD_WM_PAGE_256B, 4096, 0x20},                 \
     {"S25FL216K", SFUD_MF_ID_CYPRESS, 0x40, 0x15, 2*1024*1024, SFUD_WM_PAGE_256B, 4096, 0x20},                   \
     {"A25L080", SFUD_MF_ID_AMIC, 0x30, 0x14, 1*1024*1024, SFUD_WM_PAGE_256B, 4096, 0x20},                        \
     {"F25L004", SFUD_MF_ID_ESMT, 0x20, 0x13, 512*1024, SFUD_WM_BYTE|SFUD_WM_AAI, 4096, 0x20},                    \
