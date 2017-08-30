@@ -103,8 +103,8 @@ typedef struct {
 
 #ifdef SFUD_USING_FLASH_INFO_TABLE
 /* SFUD supported flash chip information table. If the flash not support JEDEC JESD216 standard,
- * then the SFUD will find the flash chip information by this table. Developer can add other flash to here.
- * The configuration information name and index reference the sfud_flash_chip structure.
+ * then the SFUD will find the flash chip information by this table. You can add other flash to here then
+ *  notice me for update it. The configuration information name and index reference the sfud_flash_chip structure.
  * | name | mf_id | type_id | capacity_id | capacity | write_mode | erase_gran | erase_gran_cmd |
  */
 #define SFUD_FLASH_CHIP_TABLE                                                                                    \
