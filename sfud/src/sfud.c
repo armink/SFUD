@@ -261,7 +261,7 @@ static sfud_err hardware_init(sfud_flash *flash) {
     }
 
     /* if the flash is large than 16MB (256Mb) then enter in 4-Byte addressing mode */
-    if (flash->chip.capacity > (1 << 24)) {
+    if (flash->chip.capacity > (1L << 24)) {
         result = set_4_byte_address_mode(flash, true);
     } else {
         flash->addr_in_4_byte = false;

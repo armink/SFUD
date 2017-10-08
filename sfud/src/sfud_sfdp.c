@@ -299,14 +299,14 @@ static bool read_basic_table(sfud_flash *flash, sfdp_para_header *basic_header) 
             SFUD_INFO("Error: The flash capacity is grater than 32 Gb/ 4 GB! Not Supported.");
             return false;
         }
-        sfdp->capacity = 1 << (table2_temp - 3);
+        sfdp->capacity = 1L << (table2_temp - 3);
         break;
     }
     SFUD_DEBUG("Capacity is %ld Bytes.", sfdp->capacity);
     /* get erase size and erase command  */
     for (i = 0, j = 0; i < SFUD_SFDP_ERASE_TYPE_MAX_NUM; i++) {
         if (table[28 + 2 * i] != 0x00) {
-            sfdp->eraser[j].size = 1 << table[28 + 2 * i];
+            sfdp->eraser[j].size = 1L << table[28 + 2 * i];
             sfdp->eraser[j].cmd = table[28 + 2 * i + 1];
             SFUD_DEBUG("Flash device supports %ldKB block erase. Command is 0x%02X.", sfdp->eraser[j].size / 1024,
                     sfdp->eraser[j].cmd);
@@ -344,7 +344,7 @@ static sfud_err read_sfdp_data(const sfud_flash *flash, uint32_t addr, uint8_t *
     };
 
     SFUD_ASSERT(flash);
-    SFUD_ASSERT(addr < 1 << 24);
+    SFUD_ASSERT(addr < 1L << 24);
     SFUD_ASSERT(read_buf);
     SFUD_ASSERT(flash->spi.wr);
 
