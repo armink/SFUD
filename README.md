@@ -31,6 +31,7 @@
 |[W25Q80DV](http://www.winbond.com/resource-files/w25q80dv_revg_07212015.pdf)|Winbond|8Mb|104Mhz|支持||
 |[W25Q16BV](https://media.digikey.com/pdf/Data%20Sheets/Winbond%20PDFs/W25Q16BV.pdf)|Winbond|16Mb|104Mhz|不支持| by [slipperstree](https://github.com/slipperstree)|
 |[W25Q16CV](http://www.winbond.com/resource-files/da00-w25q16cvf1.pdf)|Winbond|16Mb|104Mhz|支持||
+|[W25Q16DV](http://www.winbond.com/resource-files/w25q16dv%20revk%2005232016%20doc.pdf)|Winbond|16Mb|104Mhz|支持| by [slipperstree](https://github.com/slipperstree)|
 |[W25Q32BV](http://www.winbond.com/resource-files/w25q32bv_revi_100413_wo_automotive.pdf)|Winbond|32Mb|104Mhz|支持||
 |[W25Q64CV](http://www.winbond.com/resource-files/w25q64cv_revh_052214[2].pdf)|Winbond|64Mb|80Mhz|支持||
 |[W25Q128BV](http://www.winbond.com/resource-files/w25q128bv_revh_100313_wo_automotive.pdf)|Winbond|128Mb|104Mhz|支持||
