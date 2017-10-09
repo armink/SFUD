@@ -287,7 +287,7 @@ static bool read_basic_table(sfud_flash *flash, sfdp_para_header *basic_header) 
         return false;
     }
     /* get flash memory capacity */
-    uint32_t table2_temp = (table[7] << 24) | (table[6] << 16) | (table[5] << 8) | table[4];
+    uint32_t table2_temp = ((long)table[7] << 24) | ((long)table[6] << 16) | ((long)table[5] << 8) | (long)table[4];
     switch ((table[7] & (0x01 << 7)) >> 7) {
     case 0:
         sfdp->capacity = 1 + (table2_temp >> 3);
