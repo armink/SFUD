@@ -159,7 +159,7 @@ static bool read_basic_header(const sfud_flash *flash, sfdp_para_header *basic_h
     basic_header->minor_rev = header[1];
     basic_header->major_rev = header[2];
     basic_header->len       = header[3];
-    basic_header->ptp       = header[4] | header[5] << 8 | header[6] << 16;
+    basic_header->ptp       = (long)header[4] | (long)header[5] << 8 | (long)header[6] << 16;
     /* check JEDEC basic flash parameter header */
     if (basic_header->major_rev > SUPPORT_MAX_SFDP_MAJOR_REV) {
         SFUD_INFO("Error: This reversion(V%d.%d) JEDEC basic flash parameter header is not supported.",
@@ -171,7 +171,7 @@ static bool read_basic_header(const sfud_flash *flash, sfdp_para_header *basic_h
         return false;
     }
     SFUD_DEBUG("Check JEDEC basic flash parameter header is OK. The table id is %d, reversion is V%d.%d,"
-            " length is %d, parameter table pointer is 0x%06X.", basic_header->id, basic_header->major_rev,
+            " length is %d, parameter table pointer is 0x%06lX.", basic_header->id, basic_header->major_rev,
             basic_header->minor_rev, basic_header->len, basic_header->ptp);
 
     return true;
