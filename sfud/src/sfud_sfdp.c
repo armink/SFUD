@@ -196,7 +196,7 @@ static bool read_basic_table(sfud_flash *flash, sfdp_para_header *basic_header) 
 
     /* read JEDEC basic flash parameter table */
     if (read_sfdp_data(flash, table_addr, table, sizeof(table)) != SFUD_SUCCESS) {
-        SFUD_INFO("Error: Can't read JEDEC basic flash parameter table.");
+        SFUD_INFO("Warning: Can't read JEDEC basic flash parameter table.");
         return false;
     }
     /* print JEDEC basic flash parameter table info */
