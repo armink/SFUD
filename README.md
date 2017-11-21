@@ -46,6 +46,7 @@
 |[GD25Q16B](http://www.gigadevice.com/product/detail/5/410.html)|GigaDevice|16Mb|120Mhz|不支持| by [TanekLiang](https://github.com/TanekLiang) |
 |[GD25Q64B](http://www.gigadevice.com/product/detail/5/364.html)|GigaDevice|64Mb|120Mhz|不支持||
 |[S25FL216K](http://www.cypress.com/file/197346/download)|Cypress|16Mb|65Mhz|不支持||
+|[S25FL032P](http://www.cypress.com/file/196861/download)|Cypress|32Mb|104Mhz|不支持| by [yc_911](https://gitee.com/yc_911) |
 |[S25FL164K](http://www.cypress.com/file/196886/download)|Cypress|64Mb|108Mhz|支持||
 |[A25L080](http://www.amictechnology.com/datasheets/A25L080.pdf)|AMIC|8Mb|100Mhz|不支持||
 |[A25LQ64](http://www.amictechnology.com/datasheets/A25LQ64.pdf)|AMIC|64Mb|104Mhz|支持||
