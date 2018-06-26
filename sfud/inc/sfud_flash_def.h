@@ -80,6 +80,7 @@ typedef struct {
 #define SFUD_MF_ID_GIGADEVICE                          0xC8
 #define SFUD_MF_ID_ISSI                                0xD5
 #define SFUD_MF_ID_WINBOND                             0xEF
+#define SFUD_MF_ID_MICRONIX                            0xC2
 
 /* SFUD supported manufacturer information table */
 #define SFUD_MF_TABLE                                     \
@@ -99,6 +100,7 @@ typedef struct {
     {"GigaDevice", SFUD_MF_ID_GIGADEVICE},                \
     {"ISSI",       SFUD_MF_ID_ISSI},                      \
     {"Winbond",    SFUD_MF_ID_WINBOND},                   \
+    {"Micronix",   SFUD_MF_ID_MICRONIX},                  \
 }
 
 #ifdef SFUD_USING_FLASH_INFO_TABLE
