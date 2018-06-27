@@ -77,10 +77,10 @@ typedef struct {
 #define SFUD_MF_ID_FUDAN                               0xA1
 #define SFUD_MF_ID_HYUNDAI                             0xAD
 #define SFUD_MF_ID_SST                                 0xBF
+#define SFUD_MF_ID_MICRONIX                            0xC2
 #define SFUD_MF_ID_GIGADEVICE                          0xC8
 #define SFUD_MF_ID_ISSI                                0xD5
 #define SFUD_MF_ID_WINBOND                             0xEF
-#define SFUD_MF_ID_MICRONIX                            0xC2
 
 /* SFUD supported manufacturer information table */
 #define SFUD_MF_TABLE                                     \
