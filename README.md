@@ -56,6 +56,8 @@
 |[AT45DB161E](http://www.adestotech.com/wp-content/uploads/doc8782.pdf)|ADESTO|16Mb|85MHz|不支持|不支持|ADESTO 收购 Atmel 串行闪存产品线|
 
 > 注：QSPI 模式中，双线表示支持双线快读，四线表示支持四线快读。
+>
+> 一般情况下，支持四线快读的 FLASH 也支持两线快读。
 
 ### 2.2 API 说明
 
