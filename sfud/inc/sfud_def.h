@@ -1,7 +1,7 @@
 /*
  * This file is part of the Serial Flash Universal Driver Library.
  *
- * Copyright (c) 2016, Armink, <armink.ztl@gmail.com>
+ * Copyright (c) 2016-2018, Armink, <armink.ztl@gmail.com>
  *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of this software and associated documentation files (the
@@ -78,7 +78,7 @@ if (!(EXPR))                                                                   \
     else {if (__delay_temp) {__delay_temp();} retry --;}
 
 /* software version number */
-#define SFUD_SW_VERSION                             "1.0.6"
+#define SFUD_SW_VERSION                             "1.1.0"
 /*
  * all defined supported command
  */
