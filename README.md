@@ -25,35 +25,39 @@
 
 下表为所有在 Demo 平台上进行过真机测试的 Flash。目前 SFUD 提供的 **Flash 参数信息表** 只包括下表中 **不支持** SFDP 标准的 Flash，其他不支持 SFDP 标准的 Flash 需要大家以后 **共同来完善和维护**  **([Github](https://github.com/armink/SFUD)|[OSChina](http://git.oschina.net/armink/SFUD)|[Coding](https://coding.net/u/armink/p/SFUD/git))** 。如果觉得这个开源项目很赞，可以点击 [项目主页](https://github.com/armink/SFUD) 右上角的 **Star** ，同时把它推荐给更多有需要的朋友。
 
-|型号|制造商|容量|最高速度|SFDP  标准|备注|
-|:--:|:----:|:--:|:--:|:--:|:--:|
-|[W25Q40BV](http://microchip.ua/esp8266/W25Q40BV(EOL).pdf)|Winbond|4Mb|50Mhz|不支持|已停产|
-|[W25Q80DV](http://www.winbond.com/resource-files/w25q80dv_revg_07212015.pdf)|Winbond|8Mb|104Mhz|支持||
-|[W25Q16BV](https://media.digikey.com/pdf/Data%20Sheets/Winbond%20PDFs/W25Q16BV.pdf)|Winbond|16Mb|104Mhz|不支持| by [slipperstree](https://github.com/slipperstree)|
-|[W25Q16CV](http://www.winbond.com/resource-files/da00-w25q16cvf1.pdf)|Winbond|16Mb|104Mhz|支持||
-|[W25Q16DV](http://www.winbond.com/resource-files/w25q16dv%20revk%2005232016%20doc.pdf)|Winbond|16Mb|104Mhz|支持| by [slipperstree](https://github.com/slipperstree)|
-|[W25Q32BV](http://www.winbond.com/resource-files/w25q32bv_revi_100413_wo_automotive.pdf)|Winbond|32Mb|104Mhz|支持||
-|[W25Q64CV](http://www.winbond.com/resource-files/w25q64cv_revh_052214[2].pdf)|Winbond|64Mb|80Mhz|支持||
-|[W25Q128BV](http://www.winbond.com/resource-files/w25q128bv_revh_100313_wo_automotive.pdf)|Winbond|128Mb|104Mhz|支持||
-|[W25Q256FV](http://www.winbond.com/resource-files/w25q256fv%20revi%2002262016%20kms.pdf)|Winbond|256Mb|104Mhz|支持||
-|[MX25L3206E](http://www.macronix.com/Lists/DataSheet/Attachments/3199/MX25L3206E,%203V,%2032Mb,%20v1.5.pdf)|Macronix|32Mb|86MHz|支持||
-|[KH25L4006E](http://www.macronix.com.hk/Lists/Datasheet/Attachments/117/KH25L4006E.pdf)|Macronix|4Mb|86Mhz|支持| by [JiapengLi](https://github.com/JiapengLi)|
-|[KH25L3206E](http://www.macronix.com.hk/Lists/Datasheet/Attachments/131/KH25L3206E.pdf)|Macronix|32Mb|86Mhz|支持||
-|[SST25VF016B](http://ww1.microchip.com/downloads/en/DeviceDoc/20005044C.pdf)|Microchip|16Mb|50MHz|不支持| SST 已被 Microchip 收购|
-|[M25P40](https://www.micron.com/~/media/documents/products/data-sheet/nor-flash/serial-nor/m25p/m25p40.pdf)|Micron|4Mb|75Mhz|不支持| by [redocCheng](https://github.com/redocCheng)|
-|[M25P80](https://www.micron.com/~/media/documents/products/data-sheet/nor-flash/serial-nor/m25p/m25p80.pdf)|Micron|8Mb|75Mhz|不支持| by [redocCheng](https://github.com/redocCheng)|
-|[M25P32](https://www.micron.com/~/media/documents/products/data-sheet/nor-flash/serial-nor/m25p/m25p32.pdf)|Micron|32Mb|75Mhz|不支持||
-|[EN25Q32B](http://www.kean.com.au/oshw/WR703N/teardown/EN25Q32B%2032Mbit%20SPI%20Flash.pdf)|EON|32Mb|104MHz|不支持||
-|[GD25Q16B](http://www.gigadevice.com/product/detail/5/410.html)|GigaDevice|16Mb|120Mhz|不支持| by [TanekLiang](https://github.com/TanekLiang) |
-|[GD25Q64B](http://www.gigadevice.com/product/detail/5/364.html)|GigaDevice|64Mb|120Mhz|不支持||
-|[S25FL216K](http://www.cypress.com/file/197346/download)|Cypress|16Mb|65Mhz|不支持||
-|[S25FL032P](http://www.cypress.com/file/196861/download)|Cypress|32Mb|104Mhz|不支持| by [yc_911](https://gitee.com/yc_911) |
-|[S25FL164K](http://www.cypress.com/file/196886/download)|Cypress|64Mb|108Mhz|支持||
-|[A25L080](http://www.amictechnology.com/datasheets/A25L080.pdf)|AMIC|8Mb|100Mhz|不支持||
-|[A25LQ64](http://www.amictechnology.com/datasheets/A25LQ64.pdf)|AMIC|64Mb|104Mhz|支持||
-|[F25L004](http://www.esmt.com.tw/db/manager/upload/f25l004.pdf)|ESMT|4Mb|100Mhz|不支持||
-|[PCT25VF016B](http://pctgroup.com.tw/attachments/files/files/248_25VF016B-P.pdf)|PCT|16Mb|80Mhz|不支持|SST 授权许可，会被识别为 SST25VF016B|
-|[AT45DB161E](http://www.adestotech.com/wp-content/uploads/doc8782.pdf)|ADESTO|16Mb|85MHz|不支持|ADESTO 收购 Atmel 串行闪存产品线|
+|型号|制造商|容量|最高速度|SFDP  标准|QSPI 模式|备注|
+|:--:|:----:|:--:|:--:|:--:|:--:|----|
+|[W25Q40BV](http://microchip.ua/esp8266/W25Q40BV(EOL).pdf)|Winbond|4Mb|50Mhz|不支持|双线|已停产|
+|[W25Q80DV](http://www.winbond.com/resource-files/w25q80dv_revg_07212015.pdf)|Winbond|8Mb|104Mhz|支持|双线||
+|[W25Q16BV](https://media.digikey.com/pdf/Data%20Sheets/Winbond%20PDFs/W25Q16BV.pdf)|Winbond|16Mb|104Mhz|不支持|双线| by [slipperstree](https://github.com/slipperstree)|
+|[W25Q16CV](http://www.winbond.com/resource-files/da00-w25q16cvf1.pdf)|Winbond|16Mb|104Mhz|支持|未测试||
+|[W25Q16DV](http://www.winbond.com/resource-files/w25q16dv%20revk%2005232016%20doc.pdf)|Winbond|16Mb|104Mhz|支持|未测试| by [slipperstree](https://github.com/slipperstree)|
+|[W25Q32BV](http://www.winbond.com/resource-files/w25q32bv_revi_100413_wo_automotive.pdf)|Winbond|32Mb|104Mhz|支持|双线||
+|[W25Q64CV](http://www.winbond.com/resource-files/w25q64cv_revh_052214[2].pdf)|Winbond|64Mb|80Mhz|支持|四线||
+|[W25Q128BV](http://www.winbond.com/resource-files/w25q128bv_revh_100313_wo_automotive.pdf)|Winbond|128Mb|104Mhz|支持|四线||
+|[W25Q256FV](http://www.winbond.com/resource-files/w25q256fv%20revi%2002262016%20kms.pdf)|Winbond|256Mb|104Mhz|支持|未测试||
+|[MX25L3206E](http://www.macronix.com/Lists/DataSheet/Attachments/3199/MX25L3206E,%203V,%2032Mb,%20v1.5.pdf)|Macronix|32Mb|86MHz|支持|双线||
+|[KH25L4006E](http://www.macronix.com.hk/Lists/Datasheet/Attachments/117/KH25L4006E.pdf)|Macronix|4Mb|86Mhz|支持|未测试| by [JiapengLi](https://github.com/JiapengLi)|
+|[KH25L3206E](http://www.macronix.com.hk/Lists/Datasheet/Attachments/131/KH25L3206E.pdf)|Macronix|32Mb|86Mhz|支持|双线||
+|[SST25VF016B](http://ww1.microchip.com/downloads/en/DeviceDoc/20005044C.pdf)|Microchip|16Mb|50MHz|不支持|不支持| SST 已被 Microchip 收购|
+|[M25P40](https://www.micron.com/~/media/documents/products/data-sheet/nor-flash/serial-nor/m25p/m25p40.pdf)|Micron|4Mb|75Mhz|不支持|未测试| by [redocCheng](https://github.com/redocCheng)|
+|[M25P80](https://www.micron.com/~/media/documents/products/data-sheet/nor-flash/serial-nor/m25p/m25p80.pdf)|Micron|8Mb|75Mhz|不支持|未测试| by [redocCheng](https://github.com/redocCheng)|
+|[M25P32](https://www.micron.com/~/media/documents/products/data-sheet/nor-flash/serial-nor/m25p/m25p32.pdf)|Micron|32Mb|75Mhz|不支持|不支持||
+|[EN25Q32B](http://www.kean.com.au/oshw/WR703N/teardown/EN25Q32B%2032Mbit%20SPI%20Flash.pdf)|EON|32Mb|104MHz|不支持|未测试||
+|[GD25Q16B](http://www.gigadevice.com/product/detail/5/410.html)|GigaDevice|16Mb|120Mhz|不支持|未测试| by [TanekLiang](https://github.com/TanekLiang) |
+|[GD25Q64B](http://www.gigadevice.com/product/detail/5/364.html)|GigaDevice|64Mb|120Mhz|不支持|双线||
+|[S25FL216K](http://www.cypress.com/file/197346/download)|Cypress|16Mb|65Mhz|不支持|双线||
+|[S25FL032P](http://www.cypress.com/file/196861/download)|Cypress|32Mb|104Mhz|不支持|未测试| by [yc_911](https://gitee.com/yc_911) |
+|[S25FL164K](http://www.cypress.com/file/196886/download)|Cypress|64Mb|108Mhz|支持|未测试||
+|[A25L080](http://www.amictechnology.com/datasheets/A25L080.pdf)|AMIC|8Mb|100Mhz|不支持|双线||
+|[A25LQ64](http://www.amictechnology.com/datasheets/A25LQ64.pdf)|AMIC|64Mb|104Mhz|支持|支持||
+|[F25L004](http://www.esmt.com.tw/db/manager/upload/f25l004.pdf)|ESMT|4Mb|100Mhz|不支持|不支持||
+|[PCT25VF016B](http://pctgroup.com.tw/attachments/files/files/248_25VF016B-P.pdf)|PCT|16Mb|80Mhz|不支持|不支持|SST 授权许可，会被识别为 SST25VF016B|
+|[AT45DB161E](http://www.adestotech.com/wp-content/uploads/doc8782.pdf)|ADESTO|16Mb|85MHz|不支持|不支持|ADESTO 收购 Atmel 串行闪存产品线|
+
+> 注：QSPI 模式中，双线表示支持双线快读，四线表示支持四线快读。
+>
+> 一般情况下，支持四线快读的 FLASH 也支持两线快读。
 
 ### 2.2 API 说明
 
