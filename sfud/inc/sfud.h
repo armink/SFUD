@@ -75,6 +75,21 @@ size_t sfud_get_device_num(void);
  */
 const sfud_flash *sfud_get_device_table(void);
 
+#ifdef SFUD_USING_QSPI
+/**
+ * find the appropriate fast-read instruction to replace the read instruction(0x03)
+ * fast-read instruction @see qspi_flash_ext_info_table
+ *
+ * @note It has to be called after sfud_device_init().
+ *
+ * @param flash flash device
+ * @param lines_number the number of flash lines
+ *
+ * @return result
+ */
+sfud_err sfud_qspi_fast_read_enable(sfud_flash *flash, uint8_t lines_number);
+#endif
+
 /**
  * read flash data
  *
