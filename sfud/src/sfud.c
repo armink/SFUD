@@ -188,7 +188,7 @@ static void qspi_set_read_cmd_format(sfud_flash *flash, uint8_t ins, uint8_t ins
  * @note It has to be called after sfud_device_init().
  *
  * @param flash flash device
- * @param lines_number the number of flash lines
+ * @param lines_number the number of qspi data lines
  *
  * @return result
  */
@@ -236,7 +236,7 @@ sfud_err sfud_qspi_fast_read_enable(sfud_flash *flash, uint8_t lines_number) {
   
     return result;
 }
-#endif
+#endif /* SFUD_USING_QSPI */
 
 /**
  * hardware initialize

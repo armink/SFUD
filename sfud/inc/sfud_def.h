@@ -212,7 +212,7 @@ typedef struct {
     uint8_t dummy_cycles;
     uint8_t data_lines;
 } sfud_qspi_read_cmd_format;
-#endif
+#endif /* SFUD_USING_QSPI */
 
 /* SPI bus write read data function type */
 typedef sfud_err (*spi_write_read_func)(const uint8_t *write_buf, size_t write_size, uint8_t *read_buf, size_t read_size);
@@ -279,8 +279,8 @@ typedef struct {
     void *user_data;                             /**< some user data */
 
 #ifdef SFUD_USING_QSPI
-    uint8_t qspi_hw_lines;                       /**< the number of lines connected to the hardware */
-    sfud_qspi_read_cmd_format read_cmd_format;   /**< fast read cmd format struct */
+    uint8_t qspi_hw_lines;                       /**< the number of qspi data lines */
+    sfud_qspi_read_cmd_format read_cmd_format;   /**< fast read cmd format */
 #endif
 
 #ifdef SFUD_USING_SFDP

@@ -150,15 +150,15 @@ typedef struct {
 {                                                                                                  \
     /* W25Q40BV */                                                                                 \
     {SFUD_MF_ID_WINBOND, 0x40, 0x13, NORMAL_SPI_READ|DUAL_OUTPUT},                                 \
-    /* w25q80JV */                                                                                 \
+    /* W25Q80JV */                                                                                 \
     {SFUD_MF_ID_WINBOND, 0x40, 0x14, NORMAL_SPI_READ|DUAL_OUTPUT},                                 \
     /* W25Q16BV */                                                                                 \
     {SFUD_MF_ID_WINBOND, 0x40, 0x15, NORMAL_SPI_READ|DUAL_OUTPUT},                                 \
     /* W25Q32BV */                                                                                 \
     {SFUD_MF_ID_WINBOND, 0x40, 0x16, NORMAL_SPI_READ|DUAL_OUTPUT},                                 \
-    /* w25q64JV */                                                                                 \
+    /* W25Q64JV */                                                                                 \
     {SFUD_MF_ID_WINBOND, 0x40, 0x17, NORMAL_SPI_READ|DUAL_OUTPUT|DUAL_IO|QUAD_OUTPUT|QUAD_IO},     \
-    /* w25q128JV */                                                                                \
+    /* W25Q128JV */                                                                                \
     {SFUD_MF_ID_WINBOND, 0x40, 0x18, NORMAL_SPI_READ|DUAL_OUTPUT|DUAL_IO|QUAD_OUTPUT|QUAD_IO},     \
     /* EN25Q32B */                                                                                 \
     {SFUD_MF_ID_EON, 0x30, 0x16, NORMAL_SPI_READ|DUAL_OUTPUT|QUAD_IO},                             \
