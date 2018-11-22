@@ -118,6 +118,22 @@ if (!(EXPR))                                                                   \
 #define SFUD_CMD_READ_DATA                             0x03
 #endif
 
+#ifndef SFUD_CMD_DUAL_OUTPUT_READ_DATA 
+#define SFUD_CMD_DUAL_OUTPUT_READ_DATA                 0x3B
+#endif
+
+#ifndef SFUD_CMD_DUAL_IO_READ_DATA 
+#define SFUD_CMD_DUAL_IO_READ_DATA                     0xBB
+#endif
+
+#ifndef SFUD_CMD_QUAD_IO_READ_DATA
+#define SFUD_CMD_QUAD_IO_READ_DATA                     0xEB
+#endif
+
+#ifndef SFUD_CMD_QUAD_OUTPUT_READ_DATA
+#define SFUD_CMD_QUAD_OUTPUT_READ_DATA                 0x6B
+#endif
+
 #ifndef SFUD_CMD_MANUFACTURER_DEVICE_ID
 #define SFUD_CMD_MANUFACTURER_DEVICE_ID                0x90
 #endif
@@ -183,6 +199,21 @@ typedef enum {
     SFUD_ERR_ADDR_OUT_OF_BOUND = 5,                        /**< address is out of flash bound */
 } sfud_err;
 
+#ifdef SFUD_USING_QSPI
+/**
+ * QSPI flash read cmd format
+ */
+typedef struct {
+    uint8_t instruction;
+    uint8_t instruction_lines;
+    uint8_t address_size;
+    uint8_t address_lines;
+    uint8_t alternate_bytes_lines;
+    uint8_t dummy_cycles;
+    uint8_t data_lines;
+} sfud_qspi_read_cmd_format;
+#endif /* SFUD_USING_QSPI */
+
 /* SPI bus write read data function type */
 typedef sfud_err (*spi_write_read_func)(const uint8_t *write_buf, size_t write_size, uint8_t *read_buf, size_t read_size);
 
@@ -218,7 +249,11 @@ typedef struct __sfud_spi {
     char *name;
     /* SPI bus write read data function */
     sfud_err (*wr)(const struct __sfud_spi *spi, const uint8_t *write_buf, size_t write_size, uint8_t *read_buf,
-            size_t read_size);
+                   size_t read_size);
+#ifdef SFUD_USING_QSPI
+    /* QSPI fast read function */
+    sfud_err (*qspi_read)(const struct __sfud_spi *spi, uint32_t addr, sfud_qspi_read_cmd_format *qspi_read_cmd_format, uint8_t *read_buf, size_t read_size);
+#endif
     /* lock SPI bus */
     void (*lock)(const struct __sfud_spi *spi);
     /* unlock SPI bus */
@@ -242,6 +277,11 @@ typedef struct {
         size_t times;                            /**< default times for error retry */
     } retry;
     void *user_data;                             /**< some user data */
+
+#ifdef SFUD_USING_QSPI
+    uint8_t qspi_hw_lines;                       /**< the number of qspi data lines */
+    sfud_qspi_read_cmd_format read_cmd_format;   /**< fast read cmd format */
+#endif
 
 #ifdef SFUD_USING_SFDP
     sfud_sfdp sfdp;                              /**< serial flash discoverable parameters by JEDEC standard */
