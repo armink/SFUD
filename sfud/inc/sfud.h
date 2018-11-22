@@ -80,10 +80,10 @@ const sfud_flash *sfud_get_device_table(void);
  * find the appropriate fast-read instruction to replace the read instruction(0x03)
  * fast-read instruction @see SFUD_FLASH_EXT_INFO_TABLE
  *
- * @note It has to be called after sfud_device_init().
+ * @note When Flash is in QSPI mode, the method must be called after sfud_device_init().
  *
  * @param flash flash device
- * @param lines_number the number of qspi data lines，such as 1、2、4
+ * @param lines_number the number of qspi data lines, such as 1, 2, 4
  *
  * @return result
  */
@@ -105,7 +105,7 @@ sfud_err sfud_read(const sfud_flash *flash, uint32_t addr, size_t size, uint8_t 
 /**
  * erase flash data
  *
- * @note When Flash is in QSPI mode, the method must be called after sfud_device_init().
+ * @note It will erase align by erase granularity.
  *
  * @param flash flash device
  * @param addr start address
