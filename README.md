@@ -93,7 +93,7 @@ sfud_err sfud_device_init(sfud_flash *flash)
 
 所以 SFUD 对于 QSPI 模式的支持仅限于快速读命令。通过该函数可以配置 Flash 所使用的 QSPI 总线的实际支持的数据线最大宽度，例如：1 线（默认值，即传统的 SPI 模式）、2 线、4 线。
 
-设置后，SFUD 会去结合当前设定的 QSPI 总线数据线宽度，去 [QSPI Flash 扩展信息表](https://github.com/armink/SFUD/blob/4bee2d0417a7ce853cc7aa3639b03fe825611fd9/sfud/inc/sfud_flash_def.h#L149-L175) 中匹配最合适的、速度最快的快速读命令，之后用户在调用 sfud_read() 时，会使用 QSPI 模式的传输函数发送该命令。
+设置后，SFUD 会去结合当前设定的 QSPI 总线数据线宽度，去 [QSPI Flash 扩展信息表](https://github.com/armink/SFUD/blob/069d2b409ec239f84d675b2c3d37894e908829e6/sfud/inc/sfud_flash_def.h#L149-L177) 中匹配最合适的、速度最快的快速读命令，之后用户在调用 sfud_read() 时，会使用 QSPI 模式的传输函数发送该命令。
 
 ```C
 sfud_err sfud_qspi_fast_read_enable(sfud_flash *flash, uint8_t data_line_width)
