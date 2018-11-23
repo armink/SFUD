@@ -23,7 +23,7 @@
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  *
  * Function: It is the configure head file for this library.
- * Created on: 2016-04-23
+ * Created on: 2018-11-23
  */
 
 #ifndef _SFUD_CFG_H_

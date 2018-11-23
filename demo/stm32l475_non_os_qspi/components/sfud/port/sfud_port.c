@@ -23,7 +23,7 @@
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  *
  * Function: Portable interface for each platform.
- * Created on: 2016-04-23
+ * Created on: 2018-11-23
  */
 
 #include <sfud.h>
