@@ -253,7 +253,7 @@ void sfud_log_info(const char *format, ...)
 }
 
 /**
- * This function can send or read QSPI data.
+ * This function can send or send then receive QSPI data.
  */
 sfud_err qspi_send_then_recv(const void *send_buf, size_t send_length, void *recv_buf, size_t recv_length)
 {
