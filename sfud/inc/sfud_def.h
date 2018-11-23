@@ -252,7 +252,8 @@ typedef struct __sfud_spi {
                    size_t read_size);
 #ifdef SFUD_USING_QSPI
     /* QSPI fast read function */
-    sfud_err (*qspi_read)(const struct __sfud_spi *spi, uint32_t addr, sfud_qspi_read_cmd_format *qspi_read_cmd_format, uint8_t *read_buf, size_t read_size);
+    sfud_err (*qspi_read)(const struct __sfud_spi *spi, uint32_t addr, sfud_qspi_read_cmd_format *qspi_read_cmd_format,
+                          uint8_t *read_buf, size_t read_size);
 #endif
     /* lock SPI bus */
     void (*lock)(const struct __sfud_spi *spi);
@@ -279,7 +280,6 @@ typedef struct {
     void *user_data;                             /**< some user data */
 
 #ifdef SFUD_USING_QSPI
-    uint8_t qspi_hw_lines;                       /**< the number of qspi data lines */
     sfud_qspi_read_cmd_format read_cmd_format;   /**< fast read cmd format */
 #endif
 

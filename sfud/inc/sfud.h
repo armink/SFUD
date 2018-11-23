@@ -77,17 +77,19 @@ const sfud_flash *sfud_get_device_table(void);
 
 #ifdef SFUD_USING_QSPI
 /**
- * find the appropriate fast-read instruction to replace the read instruction(0x03)
+ * Enbale the fast read mode in QSPI flash mode. Default read mode is normal SPI mode.
+ *
+ * it will find the appropriate fast-read instruction to replace the read instruction(0x03)
  * fast-read instruction @see SFUD_FLASH_EXT_INFO_TABLE
  *
  * @note When Flash is in QSPI mode, the method must be called after sfud_device_init().
  *
  * @param flash flash device
- * @param lines_number the number of qspi data lines, such as 1, 2, 4
+ * @param data_line_width the data lines max width which QSPI bus supported, such as 1, 2, 4
  *
  * @return result
  */
-sfud_err sfud_qspi_fast_read_enable(sfud_flash *flash, uint8_t lines_number);
+sfud_err sfud_qspi_fast_read_enable(sfud_flash *flash, uint8_t data_line_width);
 #endif /* SFUD_USING_QSPI */
 
 /**
