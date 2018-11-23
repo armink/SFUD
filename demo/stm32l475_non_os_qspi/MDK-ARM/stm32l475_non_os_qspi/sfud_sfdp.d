@@ -1,0 +1,9 @@
+stm32l475_non_os_qspi\sfud_sfdp.o: ..\..\..\sfud\src\sfud_sfdp.c
+stm32l475_non_os_qspi\sfud_sfdp.o: ..\..\..\sfud\src\../inc/sfud.h
+stm32l475_non_os_qspi\sfud_sfdp.o: ..\..\..\sfud\src\../inc/sfud_def.h
+stm32l475_non_os_qspi\sfud_sfdp.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
+stm32l475_non_os_qspi\sfud_sfdp.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
+stm32l475_non_os_qspi\sfud_sfdp.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+stm32l475_non_os_qspi\sfud_sfdp.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdbool.h
+stm32l475_non_os_qspi\sfud_sfdp.o: ..\components\sfud\inc\sfud_cfg.h
+stm32l475_non_os_qspi\sfud_sfdp.o: ..\..\..\sfud\src\../inc/sfud_flash_def.h

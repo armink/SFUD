@@ -1,0 +1,1 @@
+stm32l475_non_os_qspi\startup_stm32l475xx.o: startup_stm32l475xx.s
