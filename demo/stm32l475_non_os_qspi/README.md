@@ -4,6 +4,8 @@
 
 ## 1、简介
 
+Demo 提供的工程是基于 STM32L475 的，通过 QSPI 外设连接 W25Q128B FLASH，Demo 里的 QSPI 读取数据使用的是四线快读指令 - Fast Read Quad I/O（0xEB）。
+
 通过 `Src\main.c` 的 `void sfud_demo(uint32_t addr, size_t size, uint8_t *data)` 方法来演示并测试第一个 Flash 设备的擦除、写入及读取功能，最后会将写入后数据读取出来，与写入前的数据进行对比，如果一致，则测试通过。
 
 ### 1.1、使用方法
@@ -12,7 +14,9 @@
 - 2、下载并运行 Demo ，此时可查看到类似如下的打印日志信息
 
 ```
-[SFUD](..\..\..\sfud\src\sfud.c:857) The flash device manufacturer ID is 0xEF, memory type ID is 0x40, capacity ID is 0x17.
+[SFUD](..\..\..\sfud\src\sfud.c:116) Start initialize Serial Flash Universal Driver(SFUD) V1.1.0.
+[SFUD](..\..\..\sfud\src\sfud.c:117) You can get the latest version on https://github.com/armink/SFUD .
+[SFUD](..\..\..\sfud\src\sfud.c:858) The flash device manufacturer ID is 0xEF, memory type ID is 0x40, capacity ID is 0x17.
 [SFUD](..\..\..\sfud\src\sfud_sfdp.c:131) Check SFDP header is OK. The reversion is V1.5, NPN is 0.
 [SFUD](..\..\..\sfud\src\sfud_sfdp.c:173) Check JEDEC basic flash parameter header is OK. The table id is 0, reversion is V1.5, length is 16, parameter table pointer is 0x000080.
 [SFUD](..\..\..\sfud\src\sfud_sfdp.c:203) JEDEC basic flash parameter table info:
@@ -35,9 +39,8 @@
 [SFUD](..\..\..\sfud\src\sfud_sfdp.c:311) Flash device supports 32KB block erase. Command is 0x52.
 [SFUD](..\..\..\sfud\src\sfud_sfdp.c:311) Flash device supports 64KB block erase. Command is 0xD8.
 [SFUD]Find a Winbond flash chip. Size is 8388608 bytes.
-[SFUD](..\..\..\sfud\src\sfud.c:836) Flash device reset success.
+[SFUD](..\..\..\sfud\src\sfud.c:837) Flash device reset success.
 [SFUD]W25Q128B flash device is initialize success.
-[SFUD]read instruction is EB
 Erase the W25Q128B flash data finish. Start from 0x00000000, size is 1024.
 Write the W25Q128B flash data finish. Start from 0x00000000, size is 1024.
 Read the W25Q128B flash data success. Start from 0x00000000, size is 1024. The data is:
@@ -108,6 +111,7 @@ Offset (h) 00 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E 0F
 [000003F0] F0 F1 F2 F3 F4 F5 F6 F7 F8 F9 FA FB FC FD FE FF
 
 The W25Q128B flash test is success.
+
 ```
 
 ## 2、文件（夹）说明

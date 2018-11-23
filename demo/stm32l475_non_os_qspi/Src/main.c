@@ -1,4 +1,3 @@
-
 /**
   ******************************************************************************
   * @file           : main.c
@@ -67,8 +66,6 @@ static void MX_QUADSPI_Init(void);
 /* USER CODE END PFP */
 
 /* USER CODE BEGIN 0 */
-extern sfud_err sfud_flash_init(char *spi_dev_name);
-extern void sfud_demo(uint32_t addr, size_t size, uint8_t *data);
 void sfud_demo(uint32_t addr, size_t size, uint8_t *data);
 
 #define SFUD_DEMO_TEST_BUFFER_SIZE                     1024
@@ -108,8 +105,10 @@ int main(void)
     MX_QUADSPI_Init();
     /* USER CODE BEGIN 2 */
     /* SFUD initialize */
-    if (sfud_flash_init("W25Q128B") == SFUD_SUCCESS)
+    if (sfud_init() == SFUD_SUCCESS)
     {
+        /* enable qspi fast read mode, fast quad read */
+        sfud_qspi_fast_read_enable(sfud_get_device(SFUD_W25_DEVICE_INDEX), 4);
         sfud_demo(0, sizeof(sfud_demo_test_buf), sfud_demo_test_buf);
     }
     /* USER CODE END 2 */
@@ -119,7 +118,7 @@ int main(void)
     while (1)
     {
         /* USER CODE END WHILE */
-
+        
         /* USER CODE BEGIN 3 */
     }
     /* USER CODE END 3 */
@@ -262,7 +261,7 @@ void sfud_demo(uint32_t addr, size_t size, uint8_t *data)
 {
     sfud_err result = SFUD_SUCCESS;
     extern sfud_flash *sfud_dev;
-    const sfud_flash *flash = sfud_dev;
+    const sfud_flash *flash = sfud_get_device(SFUD_W25_DEVICE_INDEX);
     size_t i;
     /* prepare write data */
     for (i = 0; i < size; i++)

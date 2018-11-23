@@ -3,7 +3,7 @@
  * Auto generated Run-Time-Environment Component Configuration File
  *      *** Do not modify ! ***
  *
- * Project: 'stm32l475_non_os_qspi' 
+ * Project: 'SFUDi' 
  * Target:  'stm32l475_non_os_qspi' 
  */
 
