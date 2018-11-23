@@ -1,7 +1,7 @@
 /*
  * This file is part of the Serial Flash Universal Driver Library.
  *
- * Copyright (c) 2016, Armink, <armink.ztl@gmail.com>
+ * Copyright (c) 2016-2018, Armink, <armink.ztl@gmail.com>
  *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of this software and associated documentation files (the
@@ -163,17 +163,17 @@ const sfud_flash *sfud_get_device_table(void) {
 }
 
 #ifdef SFUD_USING_QSPI
-static void qspi_set_read_cmd_format(sfud_flash *flash, uint8_t ins, uint8_t ins_lines, uint8_t addr_lines, uint8_t dummy_cycles, uint8_t data_lines) {
+static void qspi_set_read_cmd_format(sfud_flash *flash, uint8_t ins, uint8_t ins_lines, uint8_t addr_lines,
+        uint8_t dummy_cycles, uint8_t data_lines) {
     /* if medium size greater than 16Mb, use 4-Byte address, instruction should be added one */
     if (flash->chip.capacity <= 0x1000000) {
         flash->read_cmd_format.instruction = ins;
         flash->read_cmd_format.address_size = 24;
-    }
-    else {
+    } else {
         flash->read_cmd_format.instruction = ins + 1;
         flash->read_cmd_format.address_size = 32;
     }
-    
+
     flash->read_cmd_format.instruction_lines = ins_lines;
     flash->read_cmd_format.address_lines = addr_lines;
     flash->read_cmd_format.alternate_bytes_lines = 0;
@@ -182,58 +182,60 @@ static void qspi_set_read_cmd_format(sfud_flash *flash, uint8_t ins, uint8_t ins
 }
 
 /**
- * find the appropriate fast-read instruction to replace the read instruction(0x03)
- * fast-read instruction @see qspi_flash_ext_info_table
+ * Enbale the fast read mode in QSPI flash mode. Default read mode is normal SPI mode.
  *
- * @note It has to be called after sfud_device_init().
+ * it will find the appropriate fast-read instruction to replace the read instruction(0x03)
+ * fast-read instruction @see SFUD_FLASH_EXT_INFO_TABLE
+ *
+ * @note When Flash is in QSPI mode, the method must be called after sfud_device_init().
  *
  * @param flash flash device
- * @param lines_number the number of qspi data lines
+ * @param data_line_width the data lines max width which QSPI bus supported, such as 1, 2, 4
  *
  * @return result
  */
-sfud_err sfud_qspi_fast_read_enable(sfud_flash *flash, uint8_t lines_number) {
+sfud_err sfud_qspi_fast_read_enable(sfud_flash *flash, uint8_t data_line_width) {
     size_t i = 0;
     uint8_t read_mode = NORMAL_SPI_READ;
     sfud_err result = SFUD_SUCCESS;
-    
+
     SFUD_ASSERT(flash);
-    SFUD_ASSERT(lines_number == 1 || lines_number == 2 || lines_number == 4);
-    
-    flash->qspi_hw_lines = lines_number;
-    
+    SFUD_ASSERT(data_line_width == 1 || data_line_width == 2 || data_line_width == 4);
+
     /* get read_mode, If don't found, the default is SFUD_QSPI_NORMAL_SPI_READ */
     for (i = 0; i < sizeof(qspi_flash_ext_info_table) / sizeof(sfud_qspi_flash_ext_info); i++) {
         if ((qspi_flash_ext_info_table[i].mf_id == flash->chip.mf_id)
-            && (qspi_flash_ext_info_table[i].type_id == flash->chip.type_id)
-            && (qspi_flash_ext_info_table[i].capacity_id == flash->chip.capacity_id)) {
+                && (qspi_flash_ext_info_table[i].type_id == flash->chip.type_id)
+                && (qspi_flash_ext_info_table[i].capacity_id == flash->chip.capacity_id)) {
             read_mode = qspi_flash_ext_info_table[i].read_mode;
         }
     }
 
     /* determine qspi supports which read mode and set read_cmd_format struct */
-    switch(lines_number) {
-        case 1: qspi_set_read_cmd_format(flash, SFUD_CMD_READ_DATA, 1, 1, 0, 1); break;
-        case 2: 
-            if (read_mode & DUAL_IO) {
-                qspi_set_read_cmd_format(flash, SFUD_CMD_DUAL_IO_READ_DATA, 1, 2, 8, 2);
-            } else if (read_mode & DUAL_OUTPUT) {
-                qspi_set_read_cmd_format(flash, SFUD_CMD_DUAL_OUTPUT_READ_DATA, 1, 1, 8, 2);
-            } else {
-                qspi_set_read_cmd_format(flash, SFUD_CMD_READ_DATA, 1, 1, 0, 1);
-            };
-            break;
-        case 4: 
-            if (read_mode & QUAD_IO) {
-                qspi_set_read_cmd_format(flash, SFUD_CMD_QUAD_IO_READ_DATA, 1, 4, 6, 4);
-            } else if (read_mode & QUAD_OUTPUT) {
-                qspi_set_read_cmd_format(flash, SFUD_CMD_QUAD_OUTPUT_READ_DATA, 1, 1, 8, 4);
-            } else {
-                qspi_set_read_cmd_format(flash, SFUD_CMD_READ_DATA, 1, 1, 0, 1);
-            };
-            break;
+    switch (data_line_width) {
+    case 1:
+        qspi_set_read_cmd_format(flash, SFUD_CMD_READ_DATA, 1, 1, 0, 1);
+        break;
+    case 2:
+        if (read_mode & DUAL_IO) {
+            qspi_set_read_cmd_format(flash, SFUD_CMD_DUAL_IO_READ_DATA, 1, 2, 8, 2);
+        } else if (read_mode & DUAL_OUTPUT) {
+            qspi_set_read_cmd_format(flash, SFUD_CMD_DUAL_OUTPUT_READ_DATA, 1, 1, 8, 2);
+        } else {
+            qspi_set_read_cmd_format(flash, SFUD_CMD_READ_DATA, 1, 1, 0, 1);
+        }
+        break;
+    case 4:
+        if (read_mode & QUAD_IO) {
+            qspi_set_read_cmd_format(flash, SFUD_CMD_QUAD_IO_READ_DATA, 1, 4, 6, 4);
+        } else if (read_mode & QUAD_OUTPUT) {
+            qspi_set_read_cmd_format(flash, SFUD_CMD_QUAD_OUTPUT_READ_DATA, 1, 1, 8, 4);
+        } else {
+            qspi_set_read_cmd_format(flash, SFUD_CMD_READ_DATA, 1, 1, 0, 1);
+        }
+        break;
     }
-  
+
     return result;
 }
 #endif /* SFUD_USING_QSPI */
@@ -242,7 +244,7 @@ sfud_err sfud_qspi_fast_read_enable(sfud_flash *flash, uint8_t lines_number) {
  * hardware initialize
  */
 static sfud_err hardware_init(sfud_flash *flash) {
-    extern sfud_err sfud_spi_port_init(sfud_flash *flash);
+    extern sfud_err sfud_spi_port_init(sfud_flash * flash);
 
     sfud_err result = SFUD_SUCCESS;
     size_t i;
@@ -256,7 +258,7 @@ static sfud_err hardware_init(sfud_flash *flash) {
 
     /* set default read instruction */
     flash->read_cmd_format.instruction = SFUD_CMD_READ_DATA;
-    
+
     /* SPI write read function must be initialize */
     SFUD_ASSERT(flash->spi.wr);
     /* if the user don't configure flash chip information then using SFDP parameter or static flash parameter table */
@@ -410,11 +412,11 @@ sfud_err sfud_read(const sfud_flash *flash, uint32_t addr, size_t size, uint8_t 
     result = wait_busy(flash);
 
     if (result == SFUD_SUCCESS) {
-#ifdef SFUD_USING_QSPI        
+#ifdef SFUD_USING_QSPI
         if (flash->read_cmd_format.instruction != SFUD_CMD_READ_DATA) {
             result = spi->qspi_read(spi, addr, (sfud_qspi_read_cmd_format *)&flash->read_cmd_format, data, size);
-        } else 
-#endif        
+        } else
+#endif
         {
             cmd_data[0] = SFUD_CMD_READ_DATA;
             make_adress_byte_array(flash, addr, &cmd_data[1]);
@@ -429,7 +431,6 @@ sfud_err sfud_read(const sfud_flash *flash, uint32_t addr, size_t size, uint8_t 
 
     return result;
 }
-
 
 /**
  * erase all flash data
@@ -824,7 +825,7 @@ static sfud_err reset(const sfud_flash *flash) {
         SFUD_INFO("Error: Flash device reset failed.");
         return result;
     }
-    
+
     cmd_data[1] = SFUD_CMD_RESET;
     result = spi->wr(spi, &cmd_data[1], 1, NULL, 0);
 

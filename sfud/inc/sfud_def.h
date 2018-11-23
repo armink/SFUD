@@ -1,7 +1,7 @@
 /*
  * This file is part of the Serial Flash Universal Driver Library.
  *
- * Copyright (c) 2016, Armink, <armink.ztl@gmail.com>
+ * Copyright (c) 2016-2018, Armink, <armink.ztl@gmail.com>
  *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of this software and associated documentation files (the
@@ -78,7 +78,7 @@ if (!(EXPR))                                                                   \
     else {if (__delay_temp) {__delay_temp();} retry --;}
 
 /* software version number */
-#define SFUD_SW_VERSION                             "1.0.6"
+#define SFUD_SW_VERSION                             "1.1.0"
 /*
  * all defined supported command
  */
@@ -252,7 +252,8 @@ typedef struct __sfud_spi {
                    size_t read_size);
 #ifdef SFUD_USING_QSPI
     /* QSPI fast read function */
-    sfud_err (*qspi_read)(const struct __sfud_spi *spi, uint32_t addr, sfud_qspi_read_cmd_format *qspi_read_cmd_format, uint8_t *read_buf, size_t read_size);
+    sfud_err (*qspi_read)(const struct __sfud_spi *spi, uint32_t addr, sfud_qspi_read_cmd_format *qspi_read_cmd_format,
+                          uint8_t *read_buf, size_t read_size);
 #endif
     /* lock SPI bus */
     void (*lock)(const struct __sfud_spi *spi);
@@ -279,7 +280,6 @@ typedef struct {
     void *user_data;                             /**< some user data */
 
 #ifdef SFUD_USING_QSPI
-    uint8_t qspi_hw_lines;                       /**< the number of qspi data lines */
     sfud_qspi_read_cmd_format read_cmd_format;   /**< fast read cmd format */
 #endif
 
