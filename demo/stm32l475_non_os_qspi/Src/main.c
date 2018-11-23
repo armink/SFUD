@@ -107,7 +107,7 @@ int main(void)
     /* SFUD initialize */
     if (sfud_init() == SFUD_SUCCESS)
     {
-        /* enable qspi fast read mode, fast quad read */
+        /* enable qspi fast read mode, set four data lines width */
         sfud_qspi_fast_read_enable(sfud_get_device(SFUD_W25_DEVICE_INDEX), 4);
         sfud_demo(0, sizeof(sfud_demo_test_buf), sfud_demo_test_buf);
     }

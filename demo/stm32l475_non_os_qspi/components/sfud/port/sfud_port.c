@@ -1,7 +1,7 @@
 /*
  * This file is part of the Serial Flash Universal Driver Library.
  *
- * Copyright (c) 2016, Armink, <armink.ztl@gmail.com>
+ * Copyright (c) 2018, zylx, <qgyhd1234@gmail.com>
  *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of this software and associated documentation files (the
@@ -34,7 +34,7 @@
 #include <string.h>
 
 void sfud_log_info(const char *format, ...);
-sfud_err qspi_send_or_recv(const void *send_buf, size_t send_length, void *recv_buf, size_t recv_length);
+sfud_err qspi_send_then_recv(const void *send_buf, size_t send_length, void *recv_buf, size_t recv_length);
 extern QSPI_HandleTypeDef hqspi;
 
 typedef struct
@@ -84,12 +84,12 @@ static sfud_err spi_write_read(const sfud_spi *spi, const uint8_t *write_buf, si
     if (write_size && read_size)
     {
         /* read data */
-        qspi_send_or_recv(write_buf, write_size, read_buf, read_size);
+        qspi_send_then_recv(write_buf, write_size, read_buf, read_size);
     }
     else if (write_size)
     {
         /* send data */
-        qspi_send_or_recv(write_buf, write_size, NULL, NULL);
+        qspi_send_then_recv(write_buf, write_size, NULL, NULL);
     }
 
     /* set cs pin */
@@ -255,7 +255,7 @@ void sfud_log_info(const char *format, ...)
 /**
  * This function can send or read QSPI data.
  */
-sfud_err qspi_send_or_recv(const void *send_buf, size_t send_length, void *recv_buf, size_t recv_length)
+sfud_err qspi_send_then_recv(const void *send_buf, size_t send_length, void *recv_buf, size_t recv_length)
 {
     assert_param(send_buf);
     assert_param(recv_buf);
