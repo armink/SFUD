@@ -289,6 +289,7 @@ enum {
 |:-----                           |:----|
 |[/demo/stm32f10x_non_os](https://github.com/armink/SFUD/tree/master/demo/stm32f10x_non_os) |STM32F10X 裸机平台|
 |[/demo/stm32f2xx_rtt](https://github.com/armink/SFUD/tree/master/demo/stm32f2xx_rtt)  |STM32F2XX + [RT-Thread](http://www.rt-thread.org/) 操作系统平台|
+|[/demo/stm32l475_non_os_qspi](https://github.com/armink/SFUD/tree/master/demo/stm32l475_non_os_qspi) |STM32L475 + QSPI 模式 裸机平台|
 
 ### 2.7 许可
 
