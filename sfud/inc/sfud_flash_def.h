@@ -160,6 +160,8 @@ typedef struct {
     {SFUD_MF_ID_WINBOND, 0x40, 0x17, NORMAL_SPI_READ|DUAL_OUTPUT|DUAL_IO|QUAD_OUTPUT|QUAD_IO},     \
     /* W25Q128JV */                                                                                \
     {SFUD_MF_ID_WINBOND, 0x40, 0x18, NORMAL_SPI_READ|DUAL_OUTPUT|DUAL_IO|QUAD_OUTPUT|QUAD_IO},     \
+    /* W25Q256FV */                                                                                \
+    {SFUD_MF_ID_WINBOND, 0x40, 0x19, NORMAL_SPI_READ|DUAL_OUTPUT|DUAL_IO|QUAD_OUTPUT|QUAD_IO},     \
     /* EN25Q32B */                                                                                 \
     {SFUD_MF_ID_EON, 0x30, 0x16, NORMAL_SPI_READ|DUAL_OUTPUT|QUAD_IO},                             \
     /* S25FL216K */                                                                                \
