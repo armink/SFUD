@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<workspace>
+  <project>
+    <path>$WS_DIR$\stm32l475_non_os_qspi.ewp</path>
+  </project>
+  <batchBuild />
+</workspace>
