@@ -125,7 +125,8 @@ typedef struct {
     {"W25Q40BV", SFUD_MF_ID_WINBOND, 0x40, 0x13, 512L*1024L, SFUD_WM_PAGE_256B, 4096, 0x20},                        \
     {"W25Q16BV", SFUD_MF_ID_WINBOND, 0x40, 0x15, 2L*1024L*1024L, SFUD_WM_PAGE_256B, 4096, 0x20},                    \
     {"W25Q32BV", SFUD_MF_ID_WINBOND, 0x40, 0x16, 4L*1024L*1024L, SFUD_WM_PAGE_256B, 4096, 0x20},                    \
-    {"W25Q64BV", SFUD_MF_ID_WINBOND, 0x40, 0x17, 8L*1024L*1024L, SFUD_WM_PAGE_256B, 4096, 0x20},                    \
+    {"W25Q64CV", SFUD_MF_ID_WINBOND, 0x40, 0x17, 8L*1024L*1024L, SFUD_WM_PAGE_256B, 4096, 0x20},                    \
+    {"W25Q64DW", SFUD_MF_ID_WINBOND, 0x60, 0x17, 8L*1024L*1024L, SFUD_WM_PAGE_256B, 4096, 0x20},                    \
     {"W25Q128BV", SFUD_MF_ID_WINBOND, 0x40, 0x18, 16L*1024L*1024L, SFUD_WM_PAGE_256B, 4096, 0x20},                  \
     {"W25Q256FV", SFUD_MF_ID_WINBOND, 0x40, 0x19, 32L*1024L*1024L, SFUD_WM_PAGE_256B, 4096, 0x20},                  \
     {"SST25VF080B", SFUD_MF_ID_SST, 0x25, 0x8E, 1L*1024L*1024L, SFUD_WM_BYTE|SFUD_WM_AAI, 4096, 0x20},              \
@@ -158,7 +159,7 @@ typedef struct {
     /* W25Q16BV */                                                                                 \
     {SFUD_MF_ID_WINBOND, 0x40, 0x15, NORMAL_SPI_READ|DUAL_OUTPUT},                                 \
     /* W25Q32BV */                                                                                 \
-    {SFUD_MF_ID_WINBOND, 0x40, 0x16, NORMAL_SPI_READ|DUAL_OUTPUT},                                 \
+    {SFUD_MF_ID_WINBOND, 0x40, 0x16, NORMAL_SPI_READ|DUAL_OUTPUT|QUAD_OUTPUT|QUAD_IO},             \
     /* W25Q64JV */                                                                                 \
     {SFUD_MF_ID_WINBOND, 0x40, 0x17, NORMAL_SPI_READ|DUAL_OUTPUT|DUAL_IO|QUAD_OUTPUT|QUAD_IO},     \
     /* W25Q128JV */                                                                                \
