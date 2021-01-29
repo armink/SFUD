@@ -1,7 +1,7 @@
 /*
  * This file is part of the Serial Flash Universal Driver Library.
  *
- * Copyright (c) 2016, Armink, <armink.ztl@gmail.com>
+ * Copyright (c) 2016-2018, Armink, <armink.ztl@gmail.com>
  *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of this software and associated documentation files (the
@@ -43,5 +43,7 @@ enum {
 {                                                                              \
     [SFUD_XXXX_DEVICE_INDEX] = {.name = "XXXX", .spi.name = "SPIX"},           \
 }
+
+#define SFUD_USING_QSPI
 
 #endif /* _SFUD_CFG_H_ */
