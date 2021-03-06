@@ -1,0 +1,13 @@
+{
+  "name": "SFUD",
+  "version": "0.0.0",
+  "build": {
+    "flags": [
+      "-I sfud/inc",
+      "-I src/drivers"
+    ],
+    "srcDir": "sfud/src",
+    "srcFilter": "+<*> -<demo/>"
+  },
+  "dependencies": []
+}
