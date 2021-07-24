@@ -111,6 +111,7 @@ typedef struct {
     {"ISSI",       SFUD_MF_ID_ISSI},                      \
     {"Winbond",    SFUD_MF_ID_WINBOND},                   \
     {"Micronix",   SFUD_MF_ID_MICRONIX},                  \
+    {"Nor-Mem",    SFUD_MF_ID_NOR_MEM},                   \
 }
 
 #ifdef SFUD_USING_FLASH_INFO_TABLE
@@ -143,6 +144,7 @@ typedef struct {
     {"A25L080", SFUD_MF_ID_AMIC, 0x30, 0x14, 1L*1024L*1024L, SFUD_WM_PAGE_256B, 4096, 0x20},                        \
     {"F25L004", SFUD_MF_ID_ESMT, 0x20, 0x13, 512L*1024L, SFUD_WM_BYTE|SFUD_WM_AAI, 4096, 0x20},                     \
     {"PCT25VF016B", SFUD_MF_ID_SST, 0x25, 0x41, 2L*1024L*1024L, SFUD_WM_BYTE|SFUD_WM_AAI, 4096, 0x20},              \
+    {"NM25Q128EV", SFUD_MF_ID_NOR_MEM, 0x21, 0x18, 16L*1024L*1024L, SFUD_WM_PAGE_256B, 4096, 0x20},                 \
 }
 #endif /* SFUD_USING_FLASH_INFO_TABLE */
 
