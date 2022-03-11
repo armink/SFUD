@@ -40,6 +40,8 @@
 |[W25Q64CV](http://www.winbond.com/resource-files/w25q64cv_revh_052214[2].pdf)|Winbond|64Mb|80Mhz|支持|四线||
 |[W25Q128BV](http://www.winbond.com/resource-files/w25q128bv_revh_100313_wo_automotive.pdf)|Winbond|128Mb|104Mhz|支持|四线||
 |[W25Q256FV](http://www.winbond.com/resource-files/w25q256fv%20revi%2002262016%20kms.pdf)|Winbond|256Mb|104Mhz|支持|四线||
+|[W25Q512JV](https://www.winbond.com/resource-files/W25Q512JV%20SPI%20RevG%2001122022Plus.pdf)|Winbond|512Mb|133Mhz|支持|四线| 似乎不支持SFUD 请不要开启|
+|[W25Q01JV](https://www.winbond.com/resource-files/W25Q01JV%20SPI%20RevC%2005032021%20Plus%20dummy.pdf)|Winbond|1024Mb|133Mhz|支持|四线|似乎不支持SFUD 请不要开启|
 |[MX25L3206E](http://www.macronix.com/Lists/DataSheet/Attachments/3199/MX25L3206E,%203V,%2032Mb,%20v1.5.pdf)|Macronix|32Mb|86MHz|支持|双线||
 |[KH25L4006E](http://www.macronix.com.hk/Lists/Datasheet/Attachments/117/KH25L4006E.pdf)|Macronix|4Mb|86Mhz|支持|未测试| by [JiapengLi](https://github.com/JiapengLi)|
 |[KH25L3206E](http://www.macronix.com.hk/Lists/Datasheet/Attachments/131/KH25L3206E.pdf)|Macronix|32Mb|86Mhz|支持|双线||

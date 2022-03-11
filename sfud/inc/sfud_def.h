@@ -106,6 +106,10 @@ if (!(EXPR))                                                                   \
 #define SFUD_CMD_PAGE_PROGRAM                          0x02
 #endif
 
+#ifndef SFUD_CMD_PAGE_PROGRAM_4_BYTES_MODE
+#define SFUD_CMD_PAGE_PROGRAM_4_BYTES_MODE             0x12
+#endif
+
 #ifndef SFUD_CMD_AAI_WORD_PROGRAM
 #define SFUD_CMD_AAI_WORD_PROGRAM                      0xAD
 #endif
@@ -122,16 +126,32 @@ if (!(EXPR))                                                                   \
 #define SFUD_CMD_DUAL_OUTPUT_READ_DATA                 0x3B
 #endif
 
+#ifndef SFUD_CMD_DUAL_OUTPUT_READ_DATA_4_BYTES_MODE
+#define SFUD_CMD_DUAL_OUTPUT_READ_DATA_4_BYTES_MODE    0x3C
+#endif
+
 #ifndef SFUD_CMD_DUAL_IO_READ_DATA 
 #define SFUD_CMD_DUAL_IO_READ_DATA                     0xBB
+#endif
+
+#ifndef SFUD_CMD_DUAL_IO_READ_DATA_4_BYTES_MODE
+#define SFUD_CMD_DUAL_IO_READ_DATA_4_BYTES_MODE        0xBC
 #endif
 
 #ifndef SFUD_CMD_QUAD_IO_READ_DATA
 #define SFUD_CMD_QUAD_IO_READ_DATA                     0xEB
 #endif
 
+#ifndef SFUD_CMD_QUAD_IO_READ_DATA_4_BYTES_MODE
+#define SFUD_CMD_QUAD_IO_READ_DATA_4_BYTES_MODE        0xEC
+#endif
+
 #ifndef SFUD_CMD_QUAD_OUTPUT_READ_DATA
 #define SFUD_CMD_QUAD_OUTPUT_READ_DATA                 0x6B
+#endif
+
+#ifndef SFUD_CMD_QUAD_OUTPUT_READ_DATA_4_BYTES_MODE
+#define SFUD_CMD_QUAD_OUTPUT_READ_DATA_4_BYTES_MODE    0x6C
 #endif
 
 #ifndef SFUD_CMD_MANUFACTURER_DEVICE_ID

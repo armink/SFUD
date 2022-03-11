@@ -163,14 +163,23 @@ const sfud_flash *sfud_get_device_table(void) {
 }
 
 #ifdef SFUD_USING_QSPI
+/***
+ * QSPI Set Read Command Format
+ * @param flash
+ * @param ins
+ * @param ins_lines
+ * @param addr_lines
+ * @param dummy_cycles
+ * @param data_lines
+ */
 static void qspi_set_read_cmd_format(sfud_flash *flash, uint8_t ins, uint8_t ins_lines, uint8_t addr_lines,
         uint8_t dummy_cycles, uint8_t data_lines) {
-    /* if medium size greater than 16Mb, use 4-Byte address, instruction should be added one */
+    
+    flash->read_cmd_format.instruction = ins;
+    /* if medium size greater than 16MB(128Mbit), use 4-Byte address, instruction should be added one */
     if (flash->chip.capacity <= 0x1000000) {
-        flash->read_cmd_format.instruction = ins;
         flash->read_cmd_format.address_size = 24;
     } else {
-        flash->read_cmd_format.instruction = ins + 1;
         flash->read_cmd_format.address_size = 32;
     }
 
@@ -217,21 +226,67 @@ sfud_err sfud_qspi_fast_read_enable(sfud_flash *flash, uint8_t data_line_width) 
         qspi_set_read_cmd_format(flash, SFUD_CMD_READ_DATA, 1, 1, 0, 1);
         break;
     case 2:
-        if (read_mode & DUAL_IO) {
-            qspi_set_read_cmd_format(flash, SFUD_CMD_DUAL_IO_READ_DATA, 1, 2, 8, 2);
-        } else if (read_mode & DUAL_OUTPUT) {
-            qspi_set_read_cmd_format(flash, SFUD_CMD_DUAL_OUTPUT_READ_DATA, 1, 1, 8, 2);
-        } else {
-            qspi_set_read_cmd_format(flash, SFUD_CMD_READ_DATA, 1, 1, 0, 1);
+        if (flash->addr_in_4_byte)
+        {
+            if (read_mode & DUAL_IO)
+            {
+                qspi_set_read_cmd_format(flash, SFUD_CMD_DUAL_IO_READ_DATA_4_BYTES_MODE, 1, 2, 4, 2);
+            }
+            else if (read_mode & DUAL_OUTPUT)
+            {
+                qspi_set_read_cmd_format(flash, SFUD_CMD_DUAL_OUTPUT_READ_DATA_4_BYTES_MODE, 1, 1, 8, 2);
+            }
+            else
+            {
+                qspi_set_read_cmd_format(flash, SFUD_CMD_READ_DATA, 1, 1, 0, 1);
+            }
+        }
+        else
+        {
+            if (read_mode & DUAL_IO)
+            {
+                qspi_set_read_cmd_format(flash, SFUD_CMD_DUAL_IO_READ_DATA, 1, 2, 4, 2);
+            }
+            else if (read_mode & DUAL_OUTPUT)
+            {
+                qspi_set_read_cmd_format(flash, SFUD_CMD_DUAL_OUTPUT_READ_DATA, 1, 1, 8, 2);
+            }
+            else
+            {
+                qspi_set_read_cmd_format(flash, SFUD_CMD_READ_DATA, 1, 1, 0, 1);
+            }
         }
         break;
     case 4:
-        if (read_mode & QUAD_IO) {
-            qspi_set_read_cmd_format(flash, SFUD_CMD_QUAD_IO_READ_DATA, 1, 4, 6, 4);
-        } else if (read_mode & QUAD_OUTPUT) {
-            qspi_set_read_cmd_format(flash, SFUD_CMD_QUAD_OUTPUT_READ_DATA, 1, 1, 8, 4);
-        } else {
-            qspi_set_read_cmd_format(flash, SFUD_CMD_READ_DATA, 1, 1, 0, 1);
+        if (flash->addr_in_4_byte)
+        {
+            if (read_mode & QUAD_IO)
+            {
+                qspi_set_read_cmd_format(flash, SFUD_CMD_QUAD_IO_READ_DATA_4_BYTES_MODE, 1, 4, 6, 4);
+            }
+            else if (read_mode & QUAD_OUTPUT)
+            {
+                qspi_set_read_cmd_format(flash, SFUD_CMD_QUAD_OUTPUT_READ_DATA_4_BYTES_MODE, 1, 1, 8, 4);
+            }
+            else
+            {
+                qspi_set_read_cmd_format(flash, SFUD_CMD_READ_DATA, 1, 1, 0, 1);
+            }
+        }
+        else
+        {
+            if (read_mode & QUAD_IO)
+            {
+                qspi_set_read_cmd_format(flash, SFUD_CMD_QUAD_IO_READ_DATA, 1, 4, 6, 4);
+            }
+            else if (read_mode & QUAD_OUTPUT)
+            {
+                qspi_set_read_cmd_format(flash, SFUD_CMD_QUAD_OUTPUT_READ_DATA, 1, 1, 8, 4);
+            }
+            else
+            {
+                qspi_set_read_cmd_format(flash, SFUD_CMD_READ_DATA, 1, 1, 0, 1);
+            }
         }
         break;
     }
