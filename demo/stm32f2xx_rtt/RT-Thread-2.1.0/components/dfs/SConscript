@@ -43,7 +43,7 @@ filesystems/yaffs2/yaffs_nandcfg.c
 filesystems/yaffs2/yaffs/yaffs_allocator.c
 filesystems/yaffs2/yaffs/yaffs_bitmap.c
 filesystems/yaffs2/yaffs/yaffs_checkptrw.c
-filesystems/yaffs2/yaffs/yaffs_ecc.c  
+filesystems/yaffs2/yaffs/yaffs_ecc.c
 filesystems/yaffs2/yaffs/yaffs_guts.c
 filesystems/yaffs2/yaffs/yaffs_nameval.c
 filesystems/yaffs2/yaffs/yaffs_nand.c
