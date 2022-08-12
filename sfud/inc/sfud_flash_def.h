@@ -81,17 +81,17 @@ typedef struct {
 #define SFUD_MF_ID_ATMEL                               0x1F
 #define SFUD_MF_ID_MICRON                              0x20
 #define SFUD_MF_ID_AMIC                                0x37
-#define SFUD_MF_ID_NOR_MEM                             0x52
 #define SFUD_MF_ID_SANYO                               0x62
 #define SFUD_MF_ID_INTEL                               0x89
 #define SFUD_MF_ID_ESMT                                0x8C
 #define SFUD_MF_ID_FUDAN                               0xA1
 #define SFUD_MF_ID_HYUNDAI                             0xAD
 #define SFUD_MF_ID_SST                                 0xBF
-#define SFUD_MF_ID_MICRONIX                            0xC2
+#define SFUD_MF_ID_MACRONIX                            0xC2
 #define SFUD_MF_ID_GIGADEVICE                          0xC8
 #define SFUD_MF_ID_ISSI                                0xD5
 #define SFUD_MF_ID_WINBOND                             0xEF
+#define SFUD_MF_ID_NOR_MEM                             0x52
 
 /* SFUD supported manufacturer information table */
 #define SFUD_MF_TABLE                                     \
@@ -111,8 +111,8 @@ typedef struct {
     {"GigaDevice", SFUD_MF_ID_GIGADEVICE},                \
     {"ISSI",       SFUD_MF_ID_ISSI},                      \
     {"Winbond",    SFUD_MF_ID_WINBOND},                   \
-    {"Micronix",   SFUD_MF_ID_MICRONIX},                  \
-    {"Nor-Mem",    SFUD_MF_ID_NOR_MEM},                   \
+    {"Macronix",   SFUD_MF_ID_MACRONIX},                  \
+    {"NOR-MEM",    SFUD_MF_ID_NOR_MEM},                        \
 }
 
 #ifdef SFUD_USING_FLASH_INFO_TABLE
@@ -147,12 +147,12 @@ typedef struct {
     {"A25L080", SFUD_MF_ID_AMIC, 0x30, 0x14, 1L*1024L*1024L, SFUD_WM_PAGE_256B, 4096, 0x20},                        \
     {"F25L004", SFUD_MF_ID_ESMT, 0x20, 0x13, 512L*1024L, SFUD_WM_BYTE|SFUD_WM_AAI, 4096, 0x20},                     \
     {"PCT25VF016B", SFUD_MF_ID_SST, 0x25, 0x41, 2L*1024L*1024L, SFUD_WM_BYTE|SFUD_WM_AAI, 4096, 0x20},              \
-    {"NM25Q128EV", SFUD_MF_ID_NOR_MEM, 0x21, 0x18, 16L*1024L*1024L, SFUD_WM_PAGE_256B, 4096, 0x20},                 \
+    {"NM25Q128EVB", SFUD_MF_ID_NOR_MEM, 0x21, 0x18, 16L*1024L*1024L, SFUD_WM_PAGE_256B, 4096, 0x20},                 \
 }
 #endif /* SFUD_USING_FLASH_INFO_TABLE */
 
 #ifdef SFUD_USING_QSPI
-/* This table saves flash read-fast instructions in QSPI mode, 
+/* This table saves flash read-fast instructions in QSPI mode,
  * SFUD can use this table to select the most appropriate read instruction for flash.
  * | mf_id | type_id | capacity_id | qspi_read_mode |
  */
@@ -181,9 +181,13 @@ typedef struct {
     /* A25LQ64 */                                                                                  \
     {SFUD_MF_ID_AMIC, 0x40, 0x17, NORMAL_SPI_READ|DUAL_OUTPUT|DUAL_IO|QUAD_IO},                    \
     /* MX25L3206E and KH25L3206E */                                                                \
-    {SFUD_MF_ID_MICRONIX, 0x20, 0x16, NORMAL_SPI_READ|DUAL_OUTPUT},                                \
+    {SFUD_MF_ID_MACRONIX, 0x20, 0x16, NORMAL_SPI_READ|DUAL_OUTPUT},                                \
+    /* MX25L51245G */                                                                              \
+    {SFUD_MF_ID_MACRONIX, 0x20, 0x1A, NORMAL_SPI_READ|DUAL_OUTPUT|DUAL_IO|QUAD_OUTPUT|QUAD_IO},    \
     /* GD25Q64B */                                                                                 \
     {SFUD_MF_ID_GIGADEVICE, 0x40, 0x17, NORMAL_SPI_READ|DUAL_OUTPUT},                              \
+    /* NM25Q128EVB */                                                                              \
+    {SFUD_MF_ID_NOR_MEM, 0x21, 0x18, NORMAL_SPI_READ|DUAL_OUTPUT|DUAL_IO|QUAD_OUTPUT|QUAD_IO},          \
 }
 #endif /* SFUD_USING_QSPI */
 
