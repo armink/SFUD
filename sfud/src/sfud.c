@@ -284,7 +284,7 @@ static sfud_err hardware_init(sfud_flash *flash) {
             } else {
                 flash->chip.write_mode = SFUD_WM_PAGE_256B;
             }
-                        /* find the the smallest erase sector size for eraser. then will use this size for erase granularity */
+            /* find the the smallest erase sector size for eraser. then will use this size for erase granularity */
             i = 0;
             /* if uniform 4k not supported choose next */
             if(flash->sfdp.eraser[0].size == 4096 && flash->sfdp.erase_4k == 0) {
