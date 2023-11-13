@@ -61,6 +61,8 @@
 |[PCT25VF016B](http://pctgroup.com.tw/attachments/files/files/248_25VF016B-P.pdf)|PCT|16Mb|80Mhz|不支持|不支持|SST 授权许可，会被识别为 SST25VF016B|
 |[AT45DB161E](http://www.adestotech.com/wp-content/uploads/doc8782.pdf)|ADESTO|16Mb|85MHz|不支持|不支持|ADESTO 收购 Atmel 串行闪存产品线|
 |[NM25Q128EV](http://www.normem.com/product/278082170)|Nor_Mem|128Mb|未测试|不支持|未测试|SFDP可能会读取到信息后识别为超过32Gb|
+|[P25D40H](https://item.szlcsc.com/583103.html)|PUYA|4Mb|未测试|支持|未测试|by Shan|
+|[P25Q80H](https://item.szlcsc.com/8512446.html)|PUYA|8Mb|未测试|支持|未测试|by Shan|
 
 > 注：QSPI 模式中，双线表示支持双线快读，四线表示支持四线快读。
 >
