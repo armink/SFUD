@@ -404,7 +404,9 @@ static sfud_err software_init(const sfud_flash *flash) {
 sfud_err sfud_read(const sfud_flash *flash, uint32_t addr, size_t size, uint8_t *data) {
     sfud_err result = SFUD_SUCCESS;
     const sfud_spi *spi = &flash->spi;
-    uint8_t cmd_data[5], cmd_size;
+    uint8_t cmd_data[5 + SFUD_READ_DUMMY_BYTE_CNT];
+    uint8_t cmd_size;
+    uint8_t i;
 
     SFUD_ASSERT(flash);
     SFUD_ASSERT(data);
@@ -429,9 +431,17 @@ sfud_err sfud_read(const sfud_flash *flash, uint32_t addr, size_t size, uint8_t 
         } else
 #endif
         {
+#ifdef SFUD_USING_FAST_READ
+            cmd_data[0] = SFUD_CMD_FAST_READ_DATA;
+#else
             cmd_data[0] = SFUD_CMD_READ_DATA;
+#endif
             make_address_byte_array(flash, addr, &cmd_data[1]);
             cmd_size = flash->addr_in_4_byte ? 5 : 4;
+            for (i = 0; i < SFUD_READ_DUMMY_BYTE_CNT; i++) {
+                cmd_data[cmd_size] = SFUD_DUMMY_DATA;
+                cmd_size++;
+            }
             result = spi->wr(spi, cmd_data, cmd_size, data, size);
         }
     }
