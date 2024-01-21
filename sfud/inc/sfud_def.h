@@ -118,6 +118,10 @@ if (!(EXPR))                                                                   \
 #define SFUD_CMD_READ_DATA                             0x03
 #endif
 
+#ifndef SFUD_CMD_FAST_READ_DATA
+#define SFUD_CMD_FAST_READ_DATA                        0x0B
+#endif
+
 #ifndef SFUD_CMD_DUAL_OUTPUT_READ_DATA
 #define SFUD_CMD_DUAL_OUTPUT_READ_DATA                 0x3B
 #endif
@@ -173,6 +177,15 @@ if (!(EXPR))                                                                   \
 /* send dummy data for read data */
 #ifndef SFUD_DUMMY_DATA
 #define SFUD_DUMMY_DATA                                0xFF
+#endif
+
+/* dummy data count for fast read data and etc */
+#ifndef SFUD_READ_DUMMY_BYTE_CNT
+#ifdef SFUD_USING_FAST_READ
+#define SFUD_READ_DUMMY_BYTE_CNT                       1
+#else
+#define SFUD_READ_DUMMY_BYTE_CNT                       0
+#endif
 #endif
 
 /* maximum number of erase type support on JESD216 (V1.0) */
