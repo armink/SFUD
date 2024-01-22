@@ -223,13 +223,19 @@ sfud_err sfud_write_status(const sfud_flash *flash, bool is_volatile, uint8_t st
 
 > 注意：关闭后只会查询该库在  `/sfud/inc/sfud_flash_def.h` 中提供的 Flash 信息表。这样虽然会降低软件的适配性，但减少代码量。
 
-#### 2.3.3 是否使用该库自带的 Flash 参数信息表
+#### 2.3.3 是否使用快速读模式（SPI模式）
+
+打开/关闭 `SFUD_USING_FAST_READ` 宏定义。许多Flash的读模式可能并不能满足较高的SPI频率（具体可查阅各Flash的数据手册交流特性部分），此时需要使能快速读模式。
+
+> 注意：由于快速读模式在读时插入了默认一个空字节，在SPI速率较慢时可能相较于读模式速度更慢。
+
+#### 2.3.4 是否使用该库自带的 Flash 参数信息表
 
 打开/关闭 `SFUD_USING_FLASH_INFO_TABLE` 宏定义
 
 > 注意：关闭后该库只驱动支持 SFDP 规范的 Flash，也会适当的降低部分代码量。另外 2.3.2 及 2.3.3 这两个宏定义至少定义一种，也可以两种方式都选择。
 
-#### 2.3.4 既不使用 SFDP ，也不使用 Flash 参数信息表
+#### 2.3.5 既不使用 SFDP ，也不使用 Flash 参数信息表
 
 为了进一步降低代码量，`SFUD_USING_SFDP` 与 `SFUD_USING_FLASH_INFO_TABLE` 也可以 **都不定义** 。
 
@@ -245,7 +251,7 @@ sfud_device_init(&sfud_norflash0);
 ......
 ```
 
-#### 2.3.5 Flash 设备表
+#### 2.3.6 Flash 设备表
 
 如果产品中存在多个 Flash ，可以添加 Flash 设备表。修改 `SFUD_FLASH_DEVICE_TABLE` 这个宏定义，示例如下：
 
@@ -264,7 +270,7 @@ enum {
 
 上面定义了两个 Flash 设备（大部分产品一个足以），两个设备的名称为 `"W25Q64CV"` 及 `"GD25Q64B"` ，分别对应 `"SPI1"` 及 `"SPI3"` 这两个 SPI 设备名称（在移植 SPI 接口时会用到，位于 `/sfud/port/sfud_port.c` ）， `SFUD_W25Q16CV_DEVICE_INDEX` 与 `SFUD_GD25Q64B_DEVICE_INDEX` 这两个枚举定义了两个设备位于设备表中的索引，可以通过 `sfud_get_device_table()` 方法获取到设备表，再配合这个索引值来访问指定的设备。
 
-#### 2.3.6 QSPI 模式
+#### 2.3.7 QSPI 模式
 
 打开/关闭 `SFUD_USING_QSPI` 宏定义
 
