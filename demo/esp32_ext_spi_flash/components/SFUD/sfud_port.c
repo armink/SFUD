@@ -30,9 +30,14 @@
 #include <stdarg.h>
 #include <esp_log.h>
 #include <driver/spi_master.h>
+#include <freertos/FreeRTOS.h>
+#include <freertos/task.h>
 #include <freertos/semphr.h>
 #include <hal/gpio_types.h>
 #include <driver/gpio.h>
+#include <hal/spi_types.h>
+#include <inttypes.h>
+#include "esp_timer.h"
 
 #define FLASH_MISO_Pin  10
 #define FLASH_MOSI_Pin  3
