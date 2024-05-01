@@ -39,7 +39,7 @@ static void sfud_demo(uint32_t addr, size_t size, uint8_t *data) {
     /* erase test */
     result = sfud_erase(flash, addr, size);
     if (result == SFUD_SUCCESS) {
-        ESP_LOGI(TAG, "Erase the %s flash data finish. Start from 0x%08X, size is %ld.",
+        ESP_LOGI(TAG, "Erase the %s flash data finish. Start from 0x%08lu, size is %u.",
                  flash->name, addr, size);
     } else {
         ESP_LOGW(TAG, "Erase the %s flash data failed.", flash->name);
@@ -48,7 +48,7 @@ static void sfud_demo(uint32_t addr, size_t size, uint8_t *data) {
     /* write test */
     result = sfud_write(flash, addr, size, data);
     if (result == SFUD_SUCCESS) {
-        ESP_LOGI(TAG, "Write the %s flash data finish. Start from 0x%08X, size is %ld.",
+        ESP_LOGI(TAG, "Write the %s flash data finish. Start from 0x%08lu, size is %u.",
                  flash->name, addr, size);
     } else {
         ESP_LOGW(TAG, "Write the %s flash data failed.", flash->name);
@@ -57,12 +57,12 @@ static void sfud_demo(uint32_t addr, size_t size, uint8_t *data) {
     /* read test */
     result = sfud_read(flash, addr, size, data);
     if (result == SFUD_SUCCESS) {
-        ESP_LOGI(TAG, "Read the %s flash data success. Start from 0x%08X, size is %ld. The data is:",
+        ESP_LOGI(TAG, "Read the %s flash data success. Start from 0x%08lu, size is %u. The data is:",
                  flash->name, addr, size);
         printf("Offset (h) 00 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E 0F\r\n");
         for (i = 0; i < size; i++) {
             if (i % 16 == 0) {
-                printf("[%08X] ", addr + i);
+                printf("[%08lX] ", addr + i);
             }
             printf("%02X ", data[i]);
             if (((i + 1) % 16 == 0) || i == size - 1) {
