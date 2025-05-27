@@ -438,10 +438,13 @@ sfud_err sfud_read(const sfud_flash *flash, uint32_t addr, size_t size, uint8_t 
 #endif
             make_address_byte_array(flash, addr, &cmd_data[1]);
             cmd_size = flash->addr_in_4_byte ? 5 : 4;
+#ifdef SFUD_USING_FAST_READ
+            // Only append dummy bytes if using fast read.
             for (i = 0; i < SFUD_READ_DUMMY_BYTE_CNT; i++) {
                 cmd_data[cmd_size] = SFUD_DUMMY_DATA;
                 cmd_size++;
             }
+#endif
             result = spi->wr(spi, cmd_data, cmd_size, data, size);
         }
     }
