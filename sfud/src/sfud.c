@@ -406,7 +406,6 @@ sfud_err sfud_read(const sfud_flash *flash, uint32_t addr, size_t size, uint8_t 
     const sfud_spi *spi = &flash->spi;
     uint8_t cmd_data[5 + SFUD_READ_DUMMY_BYTE_CNT];
     uint8_t cmd_size;
-    uint8_t i;
 
     SFUD_ASSERT(flash);
     SFUD_ASSERT(data);
@@ -440,7 +439,7 @@ sfud_err sfud_read(const sfud_flash *flash, uint32_t addr, size_t size, uint8_t 
             cmd_size = flash->addr_in_4_byte ? 5 : 4;
 #ifdef SFUD_USING_FAST_READ
             // Only append dummy bytes if using fast read.
-            for (i = 0; i < SFUD_READ_DUMMY_BYTE_CNT; i++) {
+            for (uint8_t i = 0; i < SFUD_READ_DUMMY_BYTE_CNT; i++) {
                 cmd_data[cmd_size] = SFUD_DUMMY_DATA;
                 cmd_size++;
             }
