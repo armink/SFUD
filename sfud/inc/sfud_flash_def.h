@@ -90,7 +90,7 @@ typedef struct {
 #define SFUD_MF_ID_SST                                 0xBF
 #define SFUD_MF_ID_MACRONIX                            0xC2
 #define SFUD_MF_ID_GIGADEVICE                          0xC8
-#define SFUD_MF_ID_ISSI                                0xD5
+#define SFUD_MF_ID_ISSI                                0x9D
 #define SFUD_MF_ID_WINBOND                             0xEF
 #define SFUD_MF_ID_PUYA                                0x85
 
